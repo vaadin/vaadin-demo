@@ -2,7 +2,13 @@
 @import "./aura-view.css";
 @import "./card.css";
 @import "./prism.css";
-@import "./views.css";
+@import "./main-layout.css";
+@import "./source-viewer-dialog.css";
+@import "./dashboard-view.css";
+@import "./users-view.css";
+@import "./products-view.css";
+@import "./settings-view.css";
+@import "./components-view.css";
 
 hr {
   background: var(--vaadin-border-color-secondary);

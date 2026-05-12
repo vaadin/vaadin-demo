@@ -1,0 +1,69 @@
+.settings-tabs {
+  width: fit-content;
+}
+
+.settings-panel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--vaadin-gap-l);
+  padding-inline: var(--vaadin-padding-xs);
+  padding-block: var(--vaadin-padding-l);
+}
+
+.settings-security-panel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--vaadin-padding-xs);
+  padding-block: var(--vaadin-padding-l);
+}
+
+.settings-section-button {
+  margin-top: var(--vaadin-padding-l);
+}
+
+.settings-section-divider {
+  margin-block: var(--vaadin-padding-l);
+}
+
+.settings-2fa-heading {
+  font-size: var(--aura-font-size-l);
+  line-height: var(--aura-line-height-l);
+}
+
+.settings-2fa-description {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-s);
+  line-height: var(--aura-line-height-s);
+  margin: 0;
+}
+
+.settings-integrations-grid {
+  display: grid;
+  gap: var(--vaadin-gap-s);
+  grid-template-columns: repeat(auto-fit, minmax(var(--container-xs), 1fr));
+  padding-inline: var(--vaadin-padding-xs);
+  padding-block: var(--vaadin-padding-l);
+}
+
+.integration-name {
+  font-weight: 600;
+}
+
+.integration-description {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-s);
+  line-height: var(--aura-line-height-s);
+}
+
+.integration-info {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.integration-row {
+  display: flex;
+  gap: var(--vaadin-gap-s);
+}

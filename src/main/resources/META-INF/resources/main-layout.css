@@ -1,0 +1,7 @@
+.app-logo {
+  margin-inline: var(--vaadin-padding-xs);
+}
+
+.menu-item-icon {
+  color: var(--vaadin-text-color-secondary);
+}
