@@ -1,93 +1,95 @@
-.components-view .components-card-grid {
-  display: grid;
-  grid-auto-rows: minmax(200px, auto);
-  grid-template-columns: repeat(auto-fit, minmax(var(--container-3xs), 1fr));
-  grid-auto-flow: dense;
-  gap: var(--vaadin-gap-s);
-  padding-bottom: var(--vaadin-padding-l);
-  padding-inline: var(--vaadin-padding-xs);
-}
+.components-view {
+  .components-card-grid {
+    display: grid;
+    grid-auto-rows: minmax(200px, auto);
+    grid-template-columns: repeat(auto-fit, minmax(var(--container-3xs), 1fr));
+    grid-auto-flow: dense;
+    gap: var(--vaadin-gap-s);
+    padding-bottom: var(--vaadin-padding-l);
+    padding-inline: var(--vaadin-padding-xs);
+  }
 
-.components-view .components-buttons-grid {
-  align-content: center;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: var(--vaadin-gap-s);
-  height: 100%;
-  justify-content: center;
-}
+  .components-buttons-grid {
+    align-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: var(--vaadin-gap-s);
+    height: 100%;
+    justify-content: center;
+  }
 
-.components-view .card-center {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-}
+  .card-center {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+  }
 
-.components-view .badges-row {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  gap: var(--vaadin-gap-s);
-}
+  .badges-row {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    gap: var(--vaadin-gap-s);
+  }
 
-.components-view .badges-col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--vaadin-gap-s);
-}
+  .badges-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vaadin-gap-s);
+  }
 
-.components-view .typography-card {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  font-weight: 600;
-  height: 100%;
-  justify-content: center;
-}
+  .typography-card {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    height: 100%;
+    justify-content: center;
+  }
 
-.components-view .text-xs {
-  font-size: var(--aura-font-size-xs);
-  line-height: var(--aura-line-height-xs);
-}
+  .text-xs {
+    font-size: var(--aura-font-size-xs);
+    line-height: var(--aura-line-height-xs);
+  }
 
-.components-view .text-s {
-  font-size: var(--aura-font-size-s);
-  line-height: var(--aura-line-height-s);
-}
+  .text-s {
+    font-size: var(--aura-font-size-s);
+    line-height: var(--aura-line-height-s);
+  }
 
-.components-view .text-m {
-  font-size: var(--aura-font-size-m);
-  line-height: var(--aura-line-height-m);
-}
+  .text-m {
+    font-size: var(--aura-font-size-m);
+    line-height: var(--aura-line-height-m);
+  }
 
-.components-view .text-l {
-  font-size: var(--aura-font-size-l);
-  line-height: var(--aura-line-height-l);
-}
+  .text-l {
+    font-size: var(--aura-font-size-l);
+    line-height: var(--aura-line-height-l);
+  }
 
-.components-view .text-xl {
-  font-size: var(--aura-font-size-xl);
-  line-height: var(--aura-line-height-xl);
-}
+  .text-xl {
+    font-size: var(--aura-font-size-xl);
+    line-height: var(--aura-line-height-xl);
+  }
 
-.components-view .col-span-2 {
-  grid-column: span 2;
-}
+  .col-span-2 {
+    grid-column: span 2;
+  }
 
-.components-view .col-span-3 {
-  grid-column: span 3;
-}
+  .col-span-3 {
+    grid-column: span 3;
+  }
 
-.components-view .row-span-2 {
-  grid-row: span 2;
-}
+  .row-span-2 {
+    grid-row: span 2;
+  }
 
-.components-view .message-list-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--vaadin-gap-m);
-  justify-content: center;
-  height: 100%;
+  .message-list-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vaadin-gap-m);
+    justify-content: center;
+    height: 100%;
+  }
 }

@@ -1,15 +1,17 @@
-.source-viewer-dialog .source-viewer-github-link {
-  align-items: center;
-  background: var(--aura-accent-color);
-  border: 1px solid var(--vaadin-border-color-secondary);
-  border-radius: var(--vaadin-radius-m);
-  box-shadow: var(--aura-shadow-s);
-  color: var(--aura-accent-contrast-color);
-  display: flex;
-  font-weight: 500;
-  gap: var(--vaadin-gap-s);
-  padding-inline: var(--vaadin-padding-m);
-  padding-inline-end: var(--vaadin-padding-s);
-  padding-block: var(--vaadin-padding-block-container);
-  text-decoration: none;
+.source-viewer-dialog {
+  .source-viewer-github-link {
+    align-items: center;
+    background: var(--aura-accent-color);
+    border: 1px solid var(--vaadin-border-color-secondary);
+    border-radius: var(--vaadin-radius-m);
+    box-shadow: var(--aura-shadow-s);
+    color: var(--aura-accent-contrast-color);
+    display: flex;
+    font-weight: 500;
+    gap: var(--vaadin-gap-s);
+    padding-inline: var(--vaadin-padding-m);
+    padding-inline-end: var(--vaadin-padding-s);
+    padding-block: var(--vaadin-padding-block-container);
+    text-decoration: none;
+  }
 }

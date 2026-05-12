@@ -1,7 +1,9 @@
-.main-layout .app-logo {
-  margin-inline: var(--vaadin-padding-xs);
-}
+.main-layout {
+  .app-logo {
+    margin-inline: var(--vaadin-padding-xs);
+  }
 
-.main-layout.menu-item-icon {
-  color: var(--vaadin-text-color-secondary);
+  &.menu-item-icon {
+    color: var(--vaadin-text-color-secondary);
+  }
 }
