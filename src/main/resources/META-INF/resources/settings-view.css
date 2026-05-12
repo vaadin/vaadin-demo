@@ -43,7 +43,7 @@
   .settings-integrations-grid {
     display: grid;
     gap: var(--vaadin-gap-s);
-    grid-template-columns: repeat(auto-fit, minmax(var(--container-xs), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     padding-inline: var(--vaadin-padding-xs);
     padding-block: var(--vaadin-padding-l);
   }
