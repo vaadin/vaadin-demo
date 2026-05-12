@@ -1,6 +1,9 @@
 .main-layout {
   .app-logo {
-    margin-inline: var(--vaadin-padding-xs);
+    /* Use a fixed value: the avatar's XSMALL variant overrides
+       --aura-base-size, which makes var(--vaadin-padding-xs) resolve
+       to 3px on the host instead of the root-scope 4px. */
+    margin-inline: 4px;
   }
 
   &.menu-item-icon {
