@@ -4,8 +4,6 @@ import com.vaadin.demo.ui.component.ViewFooter;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewHeading;
 import com.vaadin.demo.ui.util.Lucide;
-import com.vaadin.demo.ui.util.Tailwind.Color;
-import com.vaadin.demo.ui.util.Tailwind.Margin;
 import com.vaadin.demo.ui.util.Theme;
 import com.vaadin.demo.ui.view.*;
 import com.vaadin.flow.component.Text;
@@ -50,7 +48,7 @@ public class MainLayout extends AppLayout {
         Avatar appLogo = new Avatar();
         appLogo.addThemeNames(Theme.AVATAR_VAADIN, Theme.AVATAR_SQUARE);
         appLogo.addThemeVariants(AvatarVariant.AURA_FILLED, AvatarVariant.XSMALL);
-        appLogo.addClassName(Margin.Horizontal.XSMALL);
+        appLogo.addClassName("app-logo");
 
         ViewHeading appName = new ViewHeading("Vaadin Demo");
 
@@ -150,7 +148,7 @@ public class MainLayout extends AppLayout {
 
     private MenuItem createMenuItem(SubMenu subMenu, String label, Lucide icon, boolean checkable) {
         SvgIcon svgIcon = icon.create();
-        svgIcon.addClassName(Color.SECONDARY);
+        svgIcon.addClassName("menu-item-icon");
 
         MenuItem item = subMenu.addItem(label);
         item.addComponentAsFirst(svgIcon);

@@ -1,0 +1,276 @@
+/* MainLayout */
+.app-logo {
+  margin-inline: var(--vaadin-padding-xs);
+}
+
+.menu-item-icon {
+  color: var(--vaadin-text-color-secondary);
+}
+
+/* DashboardView */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vaadin-gap-l);
+  overflow: hidden;
+  padding-bottom: var(--vaadin-padding-l);
+  padding-inline: var(--vaadin-padding-l);
+}
+
+.dashboard-stat-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vaadin-gap-l);
+}
+
+.dashboard-stat-card {
+  flex-grow: 1;
+  --vaadin-card-title-color: var(--vaadin-text-color-secondary);
+}
+
+.dashboard-stat-value {
+  font-weight: 600;
+  font-size: var(--aura-font-size-xl);
+  line-height: var(--aura-line-height-xl);
+}
+
+.dashboard-stat-trend {
+  margin-inline-start: var(--vaadin-padding-s);
+}
+
+.dashboard-orders-card {
+  min-height: 0;
+}
+
+.dashboard-orders-heading {
+  font-size: var(--aura-font-size-xl);
+  line-height: var(--aura-line-height-xl);
+}
+
+/* UsersView */
+.users-view,
+.products-view {
+  overflow: hidden;
+}
+
+.user-name-cell {
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  gap: var(--vaadin-gap-s);
+}
+
+.user-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vaadin-gap-l);
+}
+
+.user-last-login {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-xs);
+  line-height: var(--aura-line-height-xs);
+}
+
+.user-dialog-email {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-s);
+  line-height: var(--aura-line-height-s);
+}
+
+.user-dialog-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-dialog-avatar-row {
+  align-items: center;
+  border-bottom: 1px solid var(--vaadin-border-color-secondary);
+  display: flex;
+  gap: var(--vaadin-gap-m);
+  padding-bottom: var(--vaadin-padding-l);
+  width: 100%;
+}
+
+/* SettingsView */
+.settings-tabs {
+  width: fit-content;
+}
+
+.settings-panel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--vaadin-gap-l);
+  padding-inline: var(--vaadin-padding-xs);
+  padding-block: var(--vaadin-padding-l);
+}
+
+.settings-security-panel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--vaadin-padding-xs);
+  padding-block: var(--vaadin-padding-l);
+}
+
+.settings-section-button {
+  margin-top: var(--vaadin-padding-l);
+}
+
+.settings-section-divider {
+  margin-block: var(--vaadin-padding-l);
+}
+
+.settings-2fa-heading {
+  font-size: var(--aura-font-size-l);
+  line-height: var(--aura-line-height-l);
+}
+
+.settings-2fa-description {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-s);
+  line-height: var(--aura-line-height-s);
+  margin: 0;
+}
+
+.settings-integrations-grid {
+  display: grid;
+  gap: var(--vaadin-gap-s);
+  grid-template-columns: repeat(auto-fit, minmax(var(--container-xs), 1fr));
+  padding-inline: var(--vaadin-padding-xs);
+  padding-block: var(--vaadin-padding-l);
+}
+
+.integration-name {
+  font-weight: 600;
+}
+
+.integration-description {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-s);
+  line-height: var(--aura-line-height-s);
+}
+
+.integration-info {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.integration-row {
+  display: flex;
+  gap: var(--vaadin-gap-s);
+}
+
+/* ComponentsView */
+.components-card-grid {
+  display: grid;
+  grid-auto-rows: minmax(200px, auto);
+  grid-template-columns: repeat(auto-fit, minmax(var(--container-3xs), 1fr));
+  grid-auto-flow: dense;
+  gap: var(--vaadin-gap-s);
+  padding-bottom: var(--vaadin-padding-l);
+  padding-inline: var(--vaadin-padding-xs);
+}
+
+.components-buttons-grid {
+  align-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: var(--vaadin-gap-s);
+  height: 100%;
+  justify-content: center;
+}
+
+.card-center {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.badges-row {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  gap: var(--vaadin-gap-s);
+}
+
+.badges-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vaadin-gap-s);
+}
+
+.typography-card {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  height: 100%;
+  justify-content: center;
+}
+
+.text-xs {
+  font-size: var(--aura-font-size-xs);
+  line-height: var(--aura-line-height-xs);
+}
+
+.text-s {
+  font-size: var(--aura-font-size-s);
+  line-height: var(--aura-line-height-s);
+}
+
+.text-m {
+  font-size: var(--aura-font-size-m);
+  line-height: var(--aura-line-height-m);
+}
+
+.text-l {
+  font-size: var(--aura-font-size-l);
+  line-height: var(--aura-line-height-l);
+}
+
+.text-xl {
+  font-size: var(--aura-font-size-xl);
+  line-height: var(--aura-line-height-xl);
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.col-span-3 {
+  grid-column: span 3;
+}
+
+.row-span-2 {
+  grid-row: span 2;
+}
+
+.message-list-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vaadin-gap-m);
+  justify-content: center;
+  height: 100%;
+}
+
+/* SourceViewerDialog */
+.source-viewer-github-link {
+  align-items: center;
+  background: var(--aura-accent-color);
+  border: 1px solid var(--vaadin-border-color-secondary);
+  border-radius: var(--vaadin-radius-m);
+  box-shadow: var(--aura-shadow-s);
+  color: var(--aura-accent-contrast-color);
+  display: flex;
+  font-weight: 500;
+  gap: var(--vaadin-gap-s);
+  padding-inline: var(--vaadin-padding-m);
+  padding-inline-end: var(--vaadin-padding-s);
+  padding-block: var(--vaadin-padding-block-container);
+  text-decoration: none;
+}

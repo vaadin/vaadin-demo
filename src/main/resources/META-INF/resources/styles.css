@@ -2,8 +2,7 @@
 @import "./aura-view.css";
 @import "./card.css";
 @import "./prism.css";
-@import "./tailwind.css";
-@config "./tailwind.config.js";
+@import "./views.css";
 
 hr {
   background: var(--vaadin-border-color-secondary);

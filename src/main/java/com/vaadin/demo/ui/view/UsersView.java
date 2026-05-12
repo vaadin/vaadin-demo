@@ -8,7 +8,6 @@ import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
-import com.vaadin.demo.ui.util.Tailwind.*;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -39,7 +38,7 @@ import com.vaadin.flow.router.Route;
 public class UsersView extends View {
 
     public UsersView(SourceService sourceService) {
-        addClassNames(Aura.SURFACE_SOLID, Overflow.HIDDEN);
+        addClassNames(Aura.SURFACE_SOLID, "users-view");
 
         ViewHeader header = createHeader(sourceService);
         Grid<SampleData.User> grid = createUsersGrid();
@@ -81,7 +80,7 @@ public class UsersView extends View {
                     avatar.setAbbreviation(user.initials());
 
                     Div div = new Div(avatar, new Text(user.name()));
-                    div.addClassNames(AlignItems.CENTER, Display.FLEX, FontWeight.MEDIUM, Gap.SMALL);
+                    div.addClassName("user-name-cell");
                     return div;
                 }).setComparator(u -> u.name())
                 .setHeader("Name")
@@ -189,10 +188,10 @@ public class UsersView extends View {
         role.setValue(user.role());
 
         Span lastLogin = new Span("Last login: " + user.lastLogin());
-        lastLogin.addClassNames(Color.SECONDARY, FontSize.XSMALL);
+        lastLogin.addClassName("user-last-login");
 
         Div content = new Div(avatarRow, role, lastLogin);
-        content.addClassNames(Display.FLEX, FlexDirection.COLUMN, Gap.LARGE);
+        content.addClassName("user-dialog-content");
 
         Dialog dialog = new Dialog(content);
         dialog.setHeaderTitle("Edit User");
@@ -222,14 +221,13 @@ public class UsersView extends View {
         H3 nameSpan = new H3(user.name());
 
         Span emailSpan = new Span(user.email());
-        emailSpan.addClassNames(Color.SECONDARY, FontSize.SMALL);
+        emailSpan.addClassName("user-dialog-email");
 
         Div userInfo = new Div(nameSpan, emailSpan);
-        userInfo.addClassNames(Display.FLEX, FlexDirection.COLUMN);
+        userInfo.addClassName("user-dialog-info");
 
         Div avatarRow = new Div(avatar, userInfo);
-        avatarRow.addClassNames(AlignItems.CENTER, Border.BOTTOM, BorderColor.SECONDARY, Display.FLEX, Gap.MEDIUM,
-                Padding.Bottom.LARGE, Width.FULL);
+        avatarRow.addClassName("user-dialog-avatar-row");
         return avatarRow;
     }
 

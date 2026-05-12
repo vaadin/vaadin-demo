@@ -26,8 +26,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import static com.vaadin.demo.ui.util.Tailwind.*;
-
 @Route("settings")
 @PageTitle("Settings — Vaadin Demo")
 public class SettingsView extends View {
@@ -75,7 +73,7 @@ public class SettingsView extends View {
         integrations.setVisible(false);
 
         Tabs tabs = new Tabs(generalTab, notificationsTab, securityTab, integrationsTab);
-        tabs.addClassNames(Width.FIT);
+        tabs.addClassName("settings-tabs");
         tabs.addSelectedChangeListener(e -> {
             general.setVisible(e.getSelectedTab() == generalTab);
             notifications.setVisible(e.getSelectedTab() == notificationsTab);
@@ -125,7 +123,7 @@ public class SettingsView extends View {
         save.addThemeVariants(ButtonVariant.PRIMARY);
 
         Div layout = new Div(form, save);
-        layout.addClassNames(AlignItems.START, Display.FLEX, FlexDirection.COLUMN, Gap.LARGE, Padding.Horizontal.XSMALL, Padding.Vertical.LARGE);
+        layout.addClassName("settings-panel");
         return layout;
     }
 
@@ -149,7 +147,7 @@ public class SettingsView extends View {
         save.addThemeVariants(ButtonVariant.PRIMARY);
 
         Div layout = new Div(form, save);
-        layout.addClassNames(AlignItems.START, Display.FLEX, FlexDirection.COLUMN, Gap.LARGE, Padding.Horizontal.XSMALL, Padding.Vertical.LARGE);
+        layout.addClassName("settings-panel");
         return layout;
     }
 
@@ -167,23 +165,23 @@ public class SettingsView extends View {
         form.setExpandFields(true);
 
         Button changePassword = new Button("Change Password", e -> Notifications.show("Password change is not implemented in this demo"));
-        changePassword.addClassNames(Margin.Top.LARGE);
+        changePassword.addClassName("settings-section-button");
         changePassword.addThemeVariants(ButtonVariant.PRIMARY);
 
         Hr hr = new Hr();
-        hr.addClassNames(Margin.Vertical.LARGE);
+        hr.addClassName("settings-section-divider");
 
         H2 twoFactorHeading = new H2("Two-Factor Authentication");
-        twoFactorHeading.addClassNames(FontSize.LARGE);
+        twoFactorHeading.addClassName("settings-2fa-heading");
 
         Paragraph twoFactorDescription = new Paragraph("Add an extra layer of security to your account.");
-        twoFactorDescription.addClassNames(Color.SECONDARY, FontSize.SMALL, Margin.ZERO);
+        twoFactorDescription.addClassName("settings-2fa-description");
 
         Button enableTwoFactor = new Button("Enable 2FA", e -> Notifications.show("2FA setup is not implemented in this demo"));
-        enableTwoFactor.addClassNames(Margin.Top.LARGE);
+        enableTwoFactor.addClassName("settings-section-button");
 
         Div layout = new Div(form, changePassword, hr, twoFactorHeading, twoFactorDescription, enableTwoFactor);
-        layout.addClassNames(AlignItems.START, Display.FLEX, FlexDirection.COLUMN, Padding.Horizontal.XSMALL, Padding.Vertical.LARGE);
+        layout.addClassName("settings-security-panel");
         return layout;
     }
 
@@ -192,7 +190,7 @@ public class SettingsView extends View {
      */
     private Div buildIntegrationsTab() {
         Div grid = new Div();
-        grid.addClassNames(Display.GRID, Gap.SMALL, Grid.COLUMNS_AUTO_FIT_MIN_XS, Padding.Horizontal.XSMALL, Padding.Vertical.LARGE);
+        grid.addClassName("settings-integrations-grid");
 
         for (SampleData.Integration integration : SampleData.integrations()) {
             grid.add(createIntegrationCard(integration));
@@ -205,13 +203,13 @@ public class SettingsView extends View {
      */
     private Card createIntegrationCard(SampleData.Integration integration) {
         Span name = new Span(integration.name());
-        name.addClassNames(FontWeight.SEMIBOLD);
+        name.addClassName("integration-name");
 
         Span description = new Span(integration.description());
-        description.addClassNames(Color.SECONDARY, FontSize.SMALL);
+        description.addClassName("integration-description");
 
         Div info = new Div(name, description);
-        info.addClassNames(Display.FLEX, Flex.GROW, FlexDirection.COLUMN);
+        info.addClassName("integration-info");
 
         Checkbox checkbox = new Checkbox(integration.enabled());
         checkbox.addValueChangeListener(ev -> Notifications.show(
@@ -222,7 +220,7 @@ public class SettingsView extends View {
         Button configure = new Button("Configure", e -> Notifications.show("Integration configuration is not yet implemented"));
 
         Div row = new Div(checkbox, info, configure);
-        row.addClassNames(Display.FLEX, Gap.SMALL);
+        row.addClassName("integration-row");
 
         Card card = new Card();
         card.add(row);

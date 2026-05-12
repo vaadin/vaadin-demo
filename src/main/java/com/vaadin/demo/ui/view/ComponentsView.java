@@ -6,8 +6,6 @@ import com.vaadin.demo.ui.component.View;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
-import com.vaadin.demo.ui.util.Tailwind;
-import com.vaadin.demo.ui.util.Tailwind.*;
 import com.vaadin.demo.ui.util.Theme;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -157,7 +155,7 @@ public class ComponentsView extends View {
      */
     private Div createCardGrid() {
         Div grid = new Div();
-        grid.addClassNames(Display.GRID, Tailwind.Grid.AUTO_ROWS_MIN_200, Tailwind.Grid.COLUMNS_AUTO_FIT_MIN_3XS, Tailwind.Grid.FLOW_DENSE, Gap.SMALL, Padding.Bottom.LARGE, Padding.Horizontal.XSMALL);
+        grid.addClassName("components-card-grid");
         grid.add(
                 createButtonsCard(),
                 createNotificationCard(),
@@ -208,11 +206,11 @@ public class ComponentsView extends View {
         error.addThemeVariants(ButtonVariant.ERROR, ButtonVariant.PRIMARY);
 
         Div buttons = new Div(primary, secondary, tertiary, iconButton, error, success);
-        buttons.addClassNames(AlignContent.CENTER, Display.GRID, Tailwind.Grid.COLUMNS_3_AUTO, Gap.SMALL, Height.FULL, JustifyContent.CENTER);
+        buttons.addClassName("components-buttons-grid");
 
         Card card = new Card();
         card.add(buttons);
-        card.addClassName(GridColumn.SPAN_2);
+        card.addClassName("col-span-2");
         return card;
     }
 
@@ -242,7 +240,7 @@ public class ComponentsView extends View {
         });
 
         Div div = new Div(button);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -254,7 +252,7 @@ public class ComponentsView extends View {
      */
     private Card createBadgesCard() {
         Div badges = new Div();
-        badges.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER, Gap.SMALL);
+        badges.addClassName("badges-row");
 
         badges.add(createBadges());
         badges.add(createBadges(BadgeVariant.FILLED));
@@ -263,7 +261,7 @@ public class ComponentsView extends View {
 
         Card card = new Card();
         card.add(badges);
-        card.addClassNames(GridColumn.SPAN_2, GridRow.SPAN_2);
+        card.addClassNames("col-span-2", "row-span-2");
         return card;
     }
 
@@ -272,7 +270,7 @@ public class ComponentsView extends View {
      */
     private Div createBadges(BadgeVariant... variants) {
         Div badges = new Div();
-        badges.addClassNames(Display.FLEX, FlexDirection.COLUMN, Gap.SMALL);
+        badges.addClassName("badges-col");
 
         Badge defaultBadge = new Badge("Default");
         defaultBadge.addThemeVariants(variants);
@@ -293,7 +291,7 @@ public class ComponentsView extends View {
      */
     private Div createIconBadges(BadgeVariant... variants) {
         Div badges = new Div();
-        badges.addClassNames(Display.FLEX, FlexDirection.COLUMN, Gap.SMALL);
+        badges.addClassName("badges-col");
 
         Badge defaultBadge = new Badge(Lucide.BELL_RING.create());
         defaultBadge.addThemeVariants(BadgeVariant.ICON_ONLY);
@@ -319,7 +317,7 @@ public class ComponentsView extends View {
         radioButtonGroup.setValue("Option 1");
 
         Div div = new Div(radioButtonGroup);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -351,11 +349,11 @@ public class ComponentsView extends View {
         nav.addItem(createSideNavItem("Support", Lucide.MESSAGES_SQUARE));
 
         Div div = new Div(nav);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
-        card.addClassName(GridRow.SPAN_2);
+        card.addClassName("row-span-2");
         return card;
     }
 
@@ -409,7 +407,7 @@ public class ComponentsView extends View {
         actions.getSubMenu().addItem("Delete").addClassName(Aura.ACCENT_RED);
 
         Div div = new Div(menuBar);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -430,11 +428,11 @@ public class ComponentsView extends View {
         Tabs tabs = new Tabs(details, preferences, settings);
 
         Div div = new Div(tabs);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
-        card.addClassName(GridColumn.SPAN_2);
+        card.addClassName("col-span-2");
         return card;
     }
 
@@ -454,7 +452,7 @@ public class ComponentsView extends View {
         });
 
         Div div = new Div(button);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -470,11 +468,11 @@ public class ComponentsView extends View {
         dateTimePicker.setWidth("20em");
 
         Div div = new Div(dateTimePicker);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
-        card.addClassName(GridColumn.SPAN_2);
+        card.addClassName("col-span-2");
         return card;
     }
 
@@ -487,7 +485,7 @@ public class ComponentsView extends View {
         comboBox.setValue("Finland");
 
         Div div = new Div(comboBox);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -503,7 +501,7 @@ public class ComponentsView extends View {
         checkboxGroup.setValue(Collections.singleton("Option 1"));
 
         Div div = new Div(checkboxGroup);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -514,19 +512,13 @@ public class ComponentsView extends View {
      * Card showcasing the full typography size scale.
      */
     private Card createTypographyCard() {
-        String[][] sizes = {
-                {FontSize.XLARGE, LineHeight.XLARGE},
-                {FontSize.LARGE, LineHeight.LARGE},
-                {FontSize.MEDIUM, LineHeight.MEDIUM},
-                {FontSize.SMALL, LineHeight.SMALL},
-                {FontSize.XSMALL, LineHeight.XSMALL},
-        };
+        String[] sizes = {"text-xl", "text-l", "text-m", "text-s", "text-xs"};
 
         Div div = new Div();
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, FlexDirection.COLUMN, FontWeight.SEMIBOLD, Height.FULL, JustifyContent.CENTER);
-        for (String[] size : sizes) {
+        div.addClassName("typography-card");
+        for (String size : sizes) {
             Div heading = new Div("Heading");
-            heading.addClassNames(size[0], size[1]);
+            heading.addClassName(size);
             div.add(heading);
         }
 
@@ -562,7 +554,7 @@ public class ComponentsView extends View {
 
         Card card = new Card();
         card.add(grid);
-        card.addClassNames(Aura.SURFACE_SOLID, GridColumn.SPAN_3, GridRow.SPAN_2);
+        card.addClassNames(Aura.SURFACE_SOLID, "col-span-3", "row-span-2");
         return card;
     }
 
@@ -575,7 +567,7 @@ public class ComponentsView extends View {
         select.setValue("Option 1");
 
         Div div = new Div(select);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -600,7 +592,7 @@ public class ComponentsView extends View {
         }
 
         Div div = new Div(avatarGroup);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -628,11 +620,11 @@ public class ComponentsView extends View {
         MessageInput input = new MessageInput();
 
         Div div = new Div(list, input);
-        div.addClassNames(Display.FLEX, FlexDirection.COLUMN, Gap.MEDIUM, JustifyContent.CENTER, Height.FULL);
+        div.addClassName("message-list-card-content");
 
         Card card = new Card();
         card.add(div);
-        card.addClassNames(GridColumn.SPAN_2, GridRow.SPAN_2);
+        card.addClassNames("col-span-2", "row-span-2");
         return card;
     }
 
@@ -643,7 +635,7 @@ public class ComponentsView extends View {
         ProgressBar progressBar = new ProgressBar(0, 100, 50);
 
         Div div = new Div(progressBar);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -659,7 +651,7 @@ public class ComponentsView extends View {
         comboBox.setValue(Set.of("Finland", "Sweden"));
 
         Div div = new Div(comboBox);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);
@@ -676,7 +668,7 @@ public class ComponentsView extends View {
         textField.setValue("Projects");
 
         Div div = new Div(textField);
-        div.addClassNames(AlignItems.CENTER, Display.FLEX, Height.FULL, JustifyContent.CENTER);
+        div.addClassName("card-center");
 
         Card card = new Card();
         card.add(div);

@@ -1,8 +1,0 @@
-
-@theme {
-  --spacing-xs: var(--vaadin-padding-xs);
-  --spacing-s:  var(--vaadin-padding-s);
-  --spacing-m:  var(--vaadin-padding-m);
-  --spacing-l:  var(--vaadin-padding-l);
-  --spacing-xl: var(--vaadin-padding-xl);
-}

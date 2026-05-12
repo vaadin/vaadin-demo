@@ -29,14 +29,12 @@ import com.vaadin.flow.data.provider.ListDataView;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import static com.vaadin.demo.ui.util.Tailwind.Overflow;
-
 @Route("products")
 @PageTitle("Products — Vaadin Demo")
 public class ProductsView extends View {
 
     public ProductsView(SourceService sourceService) {
-        addClassNames(Aura.SURFACE_SOLID, Overflow.HIDDEN);
+        addClassNames(Aura.SURFACE_SOLID, "products-view");
 
         ViewHeader header = createHeader(sourceService);
         Grid<SampleData.Product> grid = createProductsGrid();
