@@ -37,6 +37,8 @@ import java.time.format.DateTimeFormatter;
 public class DashboardView extends View {
 
     public DashboardView(SourceService sourceService) {
+        addClassName("dashboard-view");
+
         ViewHeader header = createHeader(sourceService);
         Div content = createContent();
 

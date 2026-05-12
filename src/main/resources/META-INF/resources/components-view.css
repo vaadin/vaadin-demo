@@ -1,4 +1,4 @@
-.components-card-grid {
+.components-view .components-card-grid {
   display: grid;
   grid-auto-rows: minmax(200px, auto);
   grid-template-columns: repeat(auto-fit, minmax(var(--container-3xs), 1fr));
@@ -8,7 +8,7 @@
   padding-inline: var(--vaadin-padding-xs);
 }
 
-.components-buttons-grid {
+.components-view .components-buttons-grid {
   align-content: center;
   display: grid;
   grid-template-columns: repeat(3, auto);
@@ -17,14 +17,14 @@
   justify-content: center;
 }
 
-.card-center {
+.components-view .card-center {
   align-items: center;
   display: flex;
   height: 100%;
   justify-content: center;
 }
 
-.badges-row {
+.components-view .badges-row {
   align-items: center;
   display: flex;
   height: 100%;
@@ -32,13 +32,13 @@
   gap: var(--vaadin-gap-s);
 }
 
-.badges-col {
+.components-view .badges-col {
   display: flex;
   flex-direction: column;
   gap: var(--vaadin-gap-s);
 }
 
-.typography-card {
+.components-view .typography-card {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -47,44 +47,44 @@
   justify-content: center;
 }
 
-.text-xs {
+.components-view .text-xs {
   font-size: var(--aura-font-size-xs);
   line-height: var(--aura-line-height-xs);
 }
 
-.text-s {
+.components-view .text-s {
   font-size: var(--aura-font-size-s);
   line-height: var(--aura-line-height-s);
 }
 
-.text-m {
+.components-view .text-m {
   font-size: var(--aura-font-size-m);
   line-height: var(--aura-line-height-m);
 }
 
-.text-l {
+.components-view .text-l {
   font-size: var(--aura-font-size-l);
   line-height: var(--aura-line-height-l);
 }
 
-.text-xl {
+.components-view .text-xl {
   font-size: var(--aura-font-size-xl);
   line-height: var(--aura-line-height-xl);
 }
 
-.col-span-2 {
+.components-view .col-span-2 {
   grid-column: span 2;
 }
 
-.col-span-3 {
+.components-view .col-span-3 {
   grid-column: span 3;
 }
 
-.row-span-2 {
+.components-view .row-span-2 {
   grid-row: span 2;
 }
 
-.message-list-card-content {
+.components-view .message-list-card-content {
   display: flex;
   flex-direction: column;
   gap: var(--vaadin-gap-m);

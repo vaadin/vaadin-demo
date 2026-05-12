@@ -36,6 +36,7 @@ import java.util.Map;
 public class MainLayout extends AppLayout {
 
     public MainLayout() {
+        addClassName("main-layout");
         setPrimarySection(Section.DRAWER);
         initDrawer();
     }
@@ -148,7 +149,7 @@ public class MainLayout extends AppLayout {
 
     private MenuItem createMenuItem(SubMenu subMenu, String label, Lucide icon, boolean checkable) {
         SvgIcon svgIcon = icon.create();
-        svgIcon.addClassName("menu-item-icon");
+        svgIcon.addClassNames("main-layout", "menu-item-icon");
 
         MenuItem item = subMenu.addItem(label);
         item.addComponentAsFirst(svgIcon);

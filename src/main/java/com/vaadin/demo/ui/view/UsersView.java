@@ -194,6 +194,7 @@ public class UsersView extends View {
         content.addClassName("user-dialog-content");
 
         Dialog dialog = new Dialog(content);
+        dialog.addClassName("users-view");
         dialog.setHeaderTitle("Edit User");
         dialog.setWidth("400px");
 

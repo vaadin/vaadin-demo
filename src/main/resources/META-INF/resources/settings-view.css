@@ -1,8 +1,8 @@
-.settings-tabs {
+.settings-view .settings-tabs {
   width: fit-content;
 }
 
-.settings-panel {
+.settings-view .settings-panel {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -11,7 +11,7 @@
   padding-block: var(--vaadin-padding-l);
 }
 
-.settings-security-panel {
+.settings-view .settings-security-panel {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -19,27 +19,27 @@
   padding-block: var(--vaadin-padding-l);
 }
 
-.settings-section-button {
+.settings-view .settings-section-button {
   margin-top: var(--vaadin-padding-l);
 }
 
-.settings-section-divider {
+.settings-view .settings-section-divider {
   margin-block: var(--vaadin-padding-l);
 }
 
-.settings-2fa-heading {
+.settings-view .settings-2fa-heading {
   font-size: var(--aura-font-size-l);
   line-height: var(--aura-line-height-l);
 }
 
-.settings-2fa-description {
+.settings-view .settings-2fa-description {
   color: var(--vaadin-text-color-secondary);
   font-size: var(--aura-font-size-s);
   line-height: var(--aura-line-height-s);
   margin: 0;
 }
 
-.settings-integrations-grid {
+.settings-view .settings-integrations-grid {
   display: grid;
   gap: var(--vaadin-gap-s);
   grid-template-columns: repeat(auto-fit, minmax(var(--container-xs), 1fr));
@@ -47,23 +47,23 @@
   padding-block: var(--vaadin-padding-l);
 }
 
-.integration-name {
+.settings-view .integration-name {
   font-weight: 600;
 }
 
-.integration-description {
+.settings-view .integration-description {
   color: var(--vaadin-text-color-secondary);
   font-size: var(--aura-font-size-s);
   line-height: var(--aura-line-height-s);
 }
 
-.integration-info {
+.settings-view .integration-info {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
 }
 
-.integration-row {
+.settings-view .integration-row {
   display: flex;
   gap: var(--vaadin-gap-s);
 }

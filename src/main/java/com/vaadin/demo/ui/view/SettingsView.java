@@ -31,6 +31,8 @@ import com.vaadin.flow.router.Route;
 public class SettingsView extends View {
 
     public SettingsView(SourceService sourceService) {
+        addClassName("settings-view");
+
         ViewHeader header = createHeader(sourceService);
         Scroller scroller = createScroller();
 

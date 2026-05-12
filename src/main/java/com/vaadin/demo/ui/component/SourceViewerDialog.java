@@ -15,6 +15,7 @@ import com.vaadin.flow.component.html.Pre;
 public class SourceViewerDialog extends Dialog {
 
     public SourceViewerDialog(Class<?> viewClass, SourceService sourceService) {
+        addClassName("source-viewer-dialog");
         setCloseOnEsc(true);
         setHeaderTitle(viewClass.getSimpleName() + ".java");
         setHeight("80vh");

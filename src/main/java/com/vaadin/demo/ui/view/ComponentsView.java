@@ -118,6 +118,8 @@ public class ComponentsView extends View {
     );
 
     public ComponentsView(SourceService sourceService) {
+        addClassName("components-view");
+
         ViewHeader header = createHeader(sourceService);
         Scroller scroller = createScroller();
 

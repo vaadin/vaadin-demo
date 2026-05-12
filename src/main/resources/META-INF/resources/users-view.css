@@ -2,37 +2,37 @@
   overflow: hidden;
 }
 
-.user-name-cell {
+.users-view .user-name-cell {
   align-items: center;
   display: flex;
   font-weight: 500;
   gap: var(--vaadin-gap-s);
 }
 
-.user-dialog-content {
+.users-view .user-dialog-content {
   display: flex;
   flex-direction: column;
   gap: var(--vaadin-gap-l);
 }
 
-.user-last-login {
+.users-view .user-last-login {
   color: var(--vaadin-text-color-secondary);
   font-size: var(--aura-font-size-xs);
   line-height: var(--aura-line-height-xs);
 }
 
-.user-dialog-email {
+.users-view .user-dialog-email {
   color: var(--vaadin-text-color-secondary);
   font-size: var(--aura-font-size-s);
   line-height: var(--aura-line-height-s);
 }
 
-.user-dialog-info {
+.users-view .user-dialog-info {
   display: flex;
   flex-direction: column;
 }
 
-.user-dialog-avatar-row {
+.users-view .user-dialog-avatar-row {
   align-items: center;
   border-bottom: 1px solid var(--vaadin-border-color-secondary);
   display: flex;
