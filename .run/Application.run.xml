@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="vaadin-demo-application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.vaadin.demo.Application" />
+    <option name="ALTERNATIVE_JRE_PATH" value="jetbrains-21.0.10-b1163.110 (mise)" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

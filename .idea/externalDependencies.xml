@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalDependencies">
+    <plugin id="com.vaadin.intellij-plugin" />
+    <plugin id="com.github.l34130.mise" />
+  </component>
+</project>

@@ -1,0 +1,15 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# suggested plugins to install
+!externalDependencies.xml
+# Per-user / unrelated plugin state
+/.copilot-plugin
+/go.imports.xml
