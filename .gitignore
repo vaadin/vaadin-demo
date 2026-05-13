@@ -1,4 +1,5 @@
 node_modules
 target
 src/main/frontend/generated
+vite.generated.ts
 
