@@ -1,5 +1,5 @@
 .components-view {
-  .components-card-grid {
+  .card-grid {
     display: grid;
     grid-auto-rows: minmax(200px, auto);
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
@@ -9,7 +9,7 @@
     padding-inline: var(--vaadin-padding-xs);
   }
 
-  .components-buttons-grid {
+  .buttons-grid {
     align-content: center;
     display: grid;
     grid-template-columns: repeat(3, auto);

@@ -157,7 +157,7 @@ public class ComponentsView extends View {
      */
     private Div createCardGrid() {
         Div grid = new Div();
-        grid.addClassName("components-card-grid");
+        grid.addClassName("card-grid");
         grid.add(
                 createButtonsCard(),
                 createNotificationCard(),
@@ -208,7 +208,7 @@ public class ComponentsView extends View {
         error.addThemeVariants(ButtonVariant.ERROR, ButtonVariant.PRIMARY);
 
         Div buttons = new Div(primary, secondary, tertiary, iconButton, error, success);
-        buttons.addClassName("components-buttons-grid");
+        buttons.addClassName("buttons-grid");
 
         Card card = new Card();
         card.add(buttons);

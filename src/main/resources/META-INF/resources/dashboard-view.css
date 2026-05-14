@@ -1,5 +1,5 @@
 .dashboard-view {
-  .dashboard-content {
+  .content {
     display: flex;
     flex-direction: column;
     gap: var(--vaadin-gap-l);
@@ -8,32 +8,32 @@
     padding-inline: var(--vaadin-padding-l);
   }
 
-  .dashboard-stat-cards {
+  .stat-cards {
     display: flex;
     flex-wrap: wrap;
     gap: var(--vaadin-gap-l);
   }
 
-  .dashboard-stat-card {
+  .stat-card {
     flex-grow: 1;
     --vaadin-card-title-color: var(--vaadin-text-color-secondary);
   }
 
-  .dashboard-stat-value {
+  .stat-value {
     font-weight: 600;
     font-size: var(--aura-font-size-xl);
     line-height: var(--aura-line-height-xl);
   }
 
-  .dashboard-stat-trend {
+  .stat-trend {
     margin-inline-start: var(--vaadin-padding-s);
   }
 
-  .dashboard-orders-card {
+  .orders-card {
     min-height: 0;
   }
 
-  .dashboard-orders-heading {
+  .orders-heading {
     font-size: var(--aura-font-size-xl);
     line-height: var(--aura-line-height-xl);
   }

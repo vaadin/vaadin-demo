@@ -75,7 +75,7 @@ public class SettingsView extends View {
         integrations.setVisible(false);
 
         Tabs tabs = new Tabs(generalTab, notificationsTab, securityTab, integrationsTab);
-        tabs.addClassName("settings-tabs");
+        tabs.addClassName("tabs");
         tabs.addSelectedChangeListener(e -> {
             general.setVisible(e.getSelectedTab() == generalTab);
             notifications.setVisible(e.getSelectedTab() == notificationsTab);
@@ -125,7 +125,7 @@ public class SettingsView extends View {
         save.addThemeVariants(ButtonVariant.PRIMARY);
 
         Div layout = new Div(form, save);
-        layout.addClassName("settings-panel");
+        layout.addClassName("panel");
         return layout;
     }
 
@@ -149,7 +149,7 @@ public class SettingsView extends View {
         save.addThemeVariants(ButtonVariant.PRIMARY);
 
         Div layout = new Div(form, save);
-        layout.addClassName("settings-panel");
+        layout.addClassName("panel");
         return layout;
     }
 
@@ -167,23 +167,23 @@ public class SettingsView extends View {
         form.setExpandFields(true);
 
         Button changePassword = new Button("Change Password", e -> Notifications.show("Password change is not implemented in this demo"));
-        changePassword.addClassName("settings-section-button");
+        changePassword.addClassName("section-button");
         changePassword.addThemeVariants(ButtonVariant.PRIMARY);
 
         Hr hr = new Hr();
-        hr.addClassName("settings-section-divider");
+        hr.addClassName("section-divider");
 
         H2 twoFactorHeading = new H2("Two-Factor Authentication");
-        twoFactorHeading.addClassName("settings-2fa-heading");
+        twoFactorHeading.addClassName("two-factor-heading");
 
         Paragraph twoFactorDescription = new Paragraph("Add an extra layer of security to your account.");
-        twoFactorDescription.addClassName("settings-2fa-description");
+        twoFactorDescription.addClassName("two-factor-description");
 
         Button enableTwoFactor = new Button("Enable 2FA", e -> Notifications.show("2FA setup is not implemented in this demo"));
-        enableTwoFactor.addClassName("settings-section-button");
+        enableTwoFactor.addClassName("section-button");
 
         Div layout = new Div(form, changePassword, hr, twoFactorHeading, twoFactorDescription, enableTwoFactor);
-        layout.addClassName("settings-security-panel");
+        layout.addClassName("security-panel");
         return layout;
     }
 
@@ -192,7 +192,7 @@ public class SettingsView extends View {
      */
     private Div buildIntegrationsTab() {
         Div grid = new Div();
-        grid.addClassName("settings-integrations-grid");
+        grid.addClassName("integrations-grid");
 
         for (SampleData.Integration integration : SampleData.integrations()) {
             grid.add(createIntegrationCard(integration));

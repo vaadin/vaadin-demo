@@ -80,7 +80,7 @@ public class UsersView extends View {
                     avatar.setAbbreviation(user.initials());
 
                     Div div = new Div(avatar, new Text(user.name()));
-                    div.addClassName("user-name-cell");
+                    div.addClassName("name-cell");
                     return div;
                 }).setComparator(u -> u.name())
                 .setHeader("Name")
@@ -188,10 +188,10 @@ public class UsersView extends View {
         role.setValue(user.role());
 
         Span lastLogin = new Span("Last login: " + user.lastLogin());
-        lastLogin.addClassName("user-last-login");
+        lastLogin.addClassName("last-login");
 
         Div content = new Div(avatarRow, role, lastLogin);
-        content.addClassName("user-dialog-content");
+        content.addClassName("dialog-content");
 
         Dialog dialog = new Dialog(content);
         dialog.addClassName("users-view");
@@ -222,13 +222,13 @@ public class UsersView extends View {
         H3 nameSpan = new H3(user.name());
 
         Span emailSpan = new Span(user.email());
-        emailSpan.addClassName("user-dialog-email");
+        emailSpan.addClassName("dialog-email");
 
         Div userInfo = new Div(nameSpan, emailSpan);
-        userInfo.addClassName("user-dialog-info");
+        userInfo.addClassName("dialog-info");
 
         Div avatarRow = new Div(avatar, userInfo);
-        avatarRow.addClassName("user-dialog-avatar-row");
+        avatarRow.addClassName("dialog-avatar-row");
         return avatarRow;
     }
 

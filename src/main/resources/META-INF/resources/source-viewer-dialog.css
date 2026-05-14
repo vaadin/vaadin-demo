@@ -1,5 +1,5 @@
 .source-viewer-dialog {
-  .source-viewer-github-link {
+  .github-link {
     align-items: center;
     background: var(--aura-accent-color);
     border: 1px solid var(--vaadin-border-color-secondary);

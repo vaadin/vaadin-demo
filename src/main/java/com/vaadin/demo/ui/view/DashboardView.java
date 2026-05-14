@@ -50,7 +50,7 @@ public class DashboardView extends View {
      */
     private Div createContent() {
         Div content = new Div(createStatCards(), createOrdersCard());
-        content.addClassName("dashboard-content");
+        content.addClassName("content");
         return content;
     }
 
@@ -81,7 +81,7 @@ public class DashboardView extends View {
                 createStatCard("New Orders", "284", "+8.1%", true),
                 createStatCard("Churn Rate", "2.4%", "-0.3%", false)
         );
-        cards.addClassName("dashboard-stat-cards");
+        cards.addClassName("stat-cards");
         return cards;
     }
 
@@ -91,7 +91,7 @@ public class DashboardView extends View {
     private Card createOrdersCard() {
         Card card = new Card();
         card.add(createOrdersGrid());
-        card.addClassNames(Aura.SURFACE_SOLID, "dashboard-orders-card");
+        card.addClassNames(Aura.SURFACE_SOLID, "orders-card");
         card.setHeader(createOrdersHeading());
         card.setHeaderSuffix(createOrdersMenuBar());
         return card;
@@ -102,7 +102,7 @@ public class DashboardView extends View {
      */
     private H2 createOrdersHeading() {
         H2 heading = new H2("Recent Orders");
-        heading.addClassName("dashboard-orders-heading");
+        heading.addClassName("orders-heading");
         return heading;
     }
 
@@ -141,16 +141,16 @@ public class DashboardView extends View {
      */
     private Card createStatCard(String label, String value, String trend, boolean favorable) {
         Span valueSpan = new Span(value);
-        valueSpan.addClassName("dashboard-stat-value");
+        valueSpan.addClassName("stat-value");
 
         Badge trendBadge = new Badge(trend);
-        trendBadge.addClassName("dashboard-stat-trend");
+        trendBadge.addClassName("stat-trend");
         trendBadge.addThemeVariants(favorable ? BadgeVariant.SUCCESS : BadgeVariant.ERROR);
         trendBadge.setIcon(favorable ? VaadinIcon.TRENDING_UP.create() : VaadinIcon.TRENDING_DOWN.create());
 
         Card card = new Card();
         card.add(valueSpan, trendBadge);
-        card.addClassName("dashboard-stat-card");
+        card.addClassName("stat-card");
         card.setTitle(label);
         return card;
     }

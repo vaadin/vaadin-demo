@@ -1,9 +1,9 @@
 .settings-view {
-  .settings-tabs {
+  .tabs {
     width: fit-content;
   }
 
-  .settings-panel {
+  .panel {
     align-items: flex-start;
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@
     padding-block: var(--vaadin-padding-l);
   }
 
-  .settings-security-panel {
+  .security-panel {
     align-items: flex-start;
     display: flex;
     flex-direction: column;
@@ -20,27 +20,27 @@
     padding-block: var(--vaadin-padding-l);
   }
 
-  .settings-section-button {
+  .section-button {
     margin-top: var(--vaadin-padding-l);
   }
 
-  .settings-section-divider {
+  .section-divider {
     margin-block: var(--vaadin-padding-l);
   }
 
-  .settings-2fa-heading {
+  .two-factor-heading {
     font-size: var(--aura-font-size-l);
     line-height: var(--aura-line-height-l);
   }
 
-  .settings-2fa-description {
+  .two-factor-description {
     color: var(--vaadin-text-color-secondary);
     font-size: var(--aura-font-size-s);
     line-height: var(--aura-line-height-s);
     margin: 0;
   }
 
-  .settings-integrations-grid {
+  .integrations-grid {
     display: grid;
     gap: var(--vaadin-gap-s);
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));

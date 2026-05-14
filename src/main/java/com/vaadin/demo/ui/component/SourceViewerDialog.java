@@ -51,7 +51,7 @@ public class SourceViewerDialog extends Dialog {
         // Footer: GitHub link with icon
         Anchor gitHub = new Anchor(githubUrl, "View on GitHub");
         gitHub.add(Lucide.SQUARE_ARROW_OUT_UP_RIGHT.create());
-        gitHub.addClassName("source-viewer-github-link");
+        gitHub.addClassName("github-link");
         gitHub.setTarget("_blank");
         getFooter().add(gitHub);
     }
