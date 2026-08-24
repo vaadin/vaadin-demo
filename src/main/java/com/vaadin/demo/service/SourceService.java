@@ -21,6 +21,6 @@ public class SourceService {
 
     public String getGitHubUrl(Class<?> clazz) {
         String path = "src/main/java/" + clazz.getName().replace('.', '/') + ".java";
-        return "https://github.com/veerapaananen/vaadin-demo/blob/main/" + path + "#L1";
+        return "https://github.com/vaadin/vaadin-demo/blob/main/" + path + "#L1";
     }
 }
