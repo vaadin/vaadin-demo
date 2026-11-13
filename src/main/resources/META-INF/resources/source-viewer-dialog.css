@@ -14,4 +14,19 @@
     padding-block: var(--vaadin-padding-block-container);
     text-decoration: none;
   }
+
+  /* Previews start at the left here, in line with the card title and docs
+     link; the Components view keeps them centered. */
+  .components-used .component-preview {
+    justify-content: flex-start;
+
+    .preview-hint {
+      text-align: start;
+    }
+  }
+
+  /* Give the grid preview a fixed height so the list stays scannable. */
+  .components-used vaadin-grid {
+    height: 16rem;
+  }
 }

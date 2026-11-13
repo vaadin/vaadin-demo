@@ -1,0 +1,97 @@
+/*
+ * Layout of the live component examples (ComponentPreviews.java), shown in
+ * the Components view and in the source viewer's "Components used here" tab.
+ */
+.component-preview {
+  /* Span the card so the centering below works wherever the card is. */
+  box-sizing: border-box;
+  width: 100%;
+
+  /* A soft accent-tinted "stage" behind the example, so it reads as a
+     preview and doesn't blend with gray surfaces such as the tab bar.
+     Mixed from theme colors, so it adapts to dark mode. */
+  background: color-mix(in srgb, var(--aura-accent-color) 6%, var(--vaadin-background-color));
+  border-radius: var(--vaadin-radius-m);
+  padding: var(--vaadin-padding-m);
+
+  /* Never let an example overflow its stage in a narrow card. */
+  > * {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  &.card-center {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vaadin-gap-s);
+    height: 100%;
+    justify-content: center;
+  }
+
+  &.buttons-grid {
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vaadin-gap-s);
+    height: 100%;
+    justify-content: center;
+  }
+
+  &.badges-row {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vaadin-gap-s);
+    height: 100%;
+    justify-content: center;
+  }
+
+  /* Shrinks a full-width component to its content so it can be centered. */
+  .fit-content {
+    width: fit-content;
+  }
+
+  .badges-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vaadin-gap-s);
+  }
+
+  &.grid-preview {
+    height: 100%;
+  }
+
+  &.message-list-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vaadin-gap-m);
+    justify-content: center;
+    height: 100%;
+  }
+
+  /* Numbered blocks in the Horizontal / Vertical Layout previews. */
+  .layout-box {
+    background: var(--vaadin-background-container-strong);
+    border-radius: var(--vaadin-radius-s);
+    padding: var(--vaadin-padding-s) var(--vaadin-padding-m);
+  }
+
+  .preview-hint {
+    color: var(--vaadin-text-color-secondary);
+    font-size: var(--aura-font-size-s);
+    max-width: 28rem;
+    text-align: center;
+  }
+}
+
+/* "See component documentation ↗" link in a card footer (DocsLink.java). */
+.docs-link {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--aura-font-size-s);
+  gap: var(--vaadin-gap-xs);
+  --vaadin-icon-size: 1em;
+}

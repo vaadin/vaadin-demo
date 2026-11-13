@@ -1,3 +1,4 @@
+/* Preview layouts and the docs link live in component-previews.css. */
 .components-view {
   .card-grid {
     display: grid;
@@ -7,36 +8,6 @@
     gap: var(--vaadin-gap-s);
     padding-bottom: var(--vaadin-padding-l);
     padding-inline: var(--vaadin-padding-xs);
-  }
-
-  .buttons-grid {
-    align-content: center;
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: var(--vaadin-gap-s);
-    height: 100%;
-    justify-content: center;
-  }
-
-  .card-center {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-  }
-
-  .badges-row {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    gap: var(--vaadin-gap-s);
-  }
-
-  .badges-col {
-    display: flex;
-    flex-direction: column;
-    gap: var(--vaadin-gap-s);
   }
 
   .typography-card {
@@ -73,23 +44,28 @@
     line-height: var(--aura-line-height-xl);
   }
 
-  .col-span-2 {
-    grid-column: span 2;
+  /* Wide cards span extra columns only when the grid actually has them;
+     spanning more columns than fit would push the page wider than the
+     screen on phones. Measured on the grid itself, so the drawer's width
+     is accounted for. 16rem columns: two fit from 33rem, three from 49rem. */
+  .card-grid {
+    container-type: inline-size;
   }
 
-  .col-span-3 {
-    grid-column: span 3;
+  @container (min-width: 33rem) {
+    .col-span-2,
+    .col-span-3 {
+      grid-column: span 2;
+    }
+  }
+
+  @container (min-width: 49rem) {
+    .col-span-3 {
+      grid-column: span 3;
+    }
   }
 
   .row-span-2 {
     grid-row: span 2;
-  }
-
-  .message-list-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--vaadin-gap-m);
-    justify-content: center;
-    height: 100%;
   }
 }
