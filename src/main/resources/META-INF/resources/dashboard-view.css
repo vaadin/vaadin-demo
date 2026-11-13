@@ -1,40 +1,109 @@
 .dashboard-view {
-  .content {
+  --vaadin-badge-padding: var(--vaadin-padding-s);
+  --orders-card-min-height: 28rem;
+
+  .orders-card {
+    order: 2;
+    flex: none;
+    min-height: var(--orders-card-min-height);
+  }
+
+  .dashboard-content {
     display: flex;
     flex-direction: column;
     gap: var(--vaadin-gap-l);
-    overflow: hidden;
+    overflow: auto;
     padding-bottom: var(--vaadin-padding-l);
     padding-inline: var(--vaadin-padding-l);
   }
 
-  .stat-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--vaadin-gap-l);
+  .dashboard-side {
+    order: 1;
+    flex: none;
+    overflow: visible;
   }
 
-  .stat-card {
-    flex-grow: 1;
-    --vaadin-card-title-color: var(--vaadin-text-color-secondary);
+  .dashboard-side-content {
+    flex-direction: column;
   }
 
-  .stat-value {
-    font-weight: 600;
-    font-size: var(--aura-font-size-xl);
-    line-height: var(--aura-line-height-xl);
+  .dashboard-side-content > .status-breakdown,
+  .dashboard-side-content > .status-cards {
+    min-width: 0;
+    width: 100%;
   }
 
-  .stat-trend {
-    margin-inline-start: var(--vaadin-padding-s);
+  .status-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+
+    > vaadin-card {
+      min-width: 0;
+    }
   }
 
-  .orders-card {
-    min-height: 0;
+  .customer-cell > vaadin-avatar {
+    flex: none;
   }
 
-  .orders-heading {
-    font-size: var(--aura-font-size-xl);
-    line-height: var(--aura-line-height-xl);
+  .customer-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .orders-filters {
+    --vaadin-input-field-value-font-size: 14px;
+  }
+
+  @media (max-width: 767px) {
+    .status-cards {
+      display: none;
+    }
+
+    .orders-filters {
+      flex-direction: column;
+      align-items: stretch;
+
+      > * {
+        width: 100%;
+      }
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1439px) {
+    .dashboard-content {
+      display: grid;
+      grid-template-rows: max-content minmax(var(--orders-card-min-height), 1fr);
+    }
+
+    .dashboard-side-content {
+      flex-direction: row;
+    }
+
+    .dashboard-side-content > .status-breakdown,
+    .dashboard-side-content > .status-cards {
+      flex: 1 1 0;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .dashboard-content {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      grid-template-rows: 1fr;
+      order: 1;
+    }
+
+    .dashboard-side {
+      order: 2;
+      overflow: visible;
+    }
+
+    .orders-card {
+      order: 1;
+    }
   }
 }

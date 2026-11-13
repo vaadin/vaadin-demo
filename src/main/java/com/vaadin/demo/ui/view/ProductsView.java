@@ -26,6 +26,7 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataView;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -53,12 +54,11 @@ public class ProductsView extends View {
 
         Button addProduct = new Button("Add Product", Lucide.PLUS.create());
         addProduct.addThemeVariants(ButtonVariant.PRIMARY);
+        addProduct.addClassName("floating-action");
         addProduct.addClickListener(e -> openProductDialog(null));
 
-        Button viewSource = new Button(Lucide.CODE.create(), e -> new SourceViewerDialog(ProductsView.class, sourceService).open());
+        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(ProductsView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
-        viewSource.setAriaLabel("View source");
-        viewSource.setTooltipText("View source");
 
         return new ViewHeader(toggle, title, addProduct, viewSource);
     }
@@ -112,18 +112,23 @@ public class ProductsView extends View {
         TextField nameFilter = new TextField();
         nameFilter.setClearButtonVisible(true);
         nameFilter.setPlaceholder("Filter name...");
+        nameFilter.setValueChangeMode(ValueChangeMode.LAZY);
         nameFilter.setWidthFull();
         filterRow.getCell(nameCol).setComponent(nameFilter);
 
         Select<String> categoryFilter = new Select<>();
-        categoryFilter.setItems("", "Software", "Infrastructure", "Marketing", "Sales", "Support",
+        categoryFilter.setItems("Software", "Infrastructure", "Marketing", "Sales", "Support",
                 "Developer", "Security", "Data", "Compliance", "Enterprise", "Tools");
+        categoryFilter.setEmptySelectionAllowed(true);
+        categoryFilter.setEmptySelectionCaption("All");
         categoryFilter.setPlaceholder("All");
         categoryFilter.setWidthFull();
         filterRow.getCell(categoryCol).setComponent(categoryFilter);
 
         Select<String> statusFilter = new Select<>();
-        statusFilter.setItems("", "Active", "Beta", "Deprecated", "Inactive");
+        statusFilter.setItems("Active", "Beta", "Deprecated", "Inactive");
+        statusFilter.setEmptySelectionAllowed(true);
+        statusFilter.setEmptySelectionCaption("All");
         statusFilter.setPlaceholder("All");
         statusFilter.setWidthFull();
         filterRow.getCell(statusCol).setComponent(statusFilter);
@@ -134,8 +139,8 @@ public class ProductsView extends View {
 
         Runnable applyFilter = () -> dataView.setFilter(p ->
                 (nameFilter.getValue().isBlank() || p.name().toLowerCase().contains(nameFilter.getValue().toLowerCase())) &&
-                        (categoryFilter.getValue() == null || categoryFilter.getValue().isBlank() || categoryFilter.getValue().equals(p.category())) &&
-                        (statusFilter.getValue() == null || statusFilter.getValue().isBlank() || statusFilter.getValue().equals(p.status())));
+                        (categoryFilter.getValue() == null || categoryFilter.getValue().equals(p.category())) &&
+                        (statusFilter.getValue() == null || statusFilter.getValue().equals(p.status())));
 
         nameFilter.addValueChangeListener(e -> applyFilter.run());
         categoryFilter.addValueChangeListener(e -> applyFilter.run());

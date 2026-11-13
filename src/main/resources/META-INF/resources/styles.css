@@ -10,6 +10,21 @@
 @import "./settings-view.css";
 @import "./components-view.css";
 
+@media (max-width: 767px) {
+  .floating-action {
+    bottom: 10px;
+    box-shadow: var(--vaadin-shadow-m);
+    left: 50%;
+    position: fixed;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .aura-view:has(.floating-action) {
+    padding-bottom: calc(var(--safe-area-inset-bottom) + 3.5rem);
+  }
+}
+
 hr {
   background: var(--vaadin-border-color-secondary);
   border: 0;
