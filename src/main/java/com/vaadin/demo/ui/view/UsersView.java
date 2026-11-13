@@ -29,6 +29,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataView;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -57,11 +58,10 @@ public class UsersView extends View {
 
         Button inviteUser = new Button("Invite User", Lucide.MAIL_PLUS.create(), e -> Notifications.show("Invite not yet implemented"));
         inviteUser.addThemeVariants(ButtonVariant.PRIMARY);
+        inviteUser.addClassName("floating-action");
 
-        Button viewSource = new Button(Lucide.CODE.create(), e -> new SourceViewerDialog(UsersView.class, sourceService).open());
+        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(UsersView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
-        viewSource.setAriaLabel("View source");
-        viewSource.setTooltipText("View source");
 
         return new ViewHeader(toggle, title, inviteUser, viewSource);
     }
@@ -84,10 +84,17 @@ public class UsersView extends View {
                     return div;
                 }).setComparator(u -> u.name())
                 .setHeader("Name")
+                // Base widths keep name, email and their filters readable on
+                // narrow screens; the grid scrolls sideways instead of
+                // squeezing them, and they still grow to fill wide screens
+                .setWidth("14rem")
+                .setFlexGrow(1)
                 .setResizable(true);
 
         var emailCol = grid.addColumn(SampleData.User::email)
                 .setHeader("Email")
+                .setWidth("16rem")
+                .setFlexGrow(1)
                 .setResizable(true)
                 .setSortable(true);
 
@@ -136,17 +143,21 @@ public class UsersView extends View {
         TextField nameFilter = new TextField();
         nameFilter.setClearButtonVisible(true);
         nameFilter.setPlaceholder("Filter name...");
+        nameFilter.setValueChangeMode(ValueChangeMode.LAZY);
         nameFilter.setWidthFull();
         filterRow.getCell(nameCol).setComponent(nameFilter);
 
         TextField emailFilter = new TextField();
         emailFilter.setClearButtonVisible(true);
         emailFilter.setPlaceholder("Filter email...");
+        emailFilter.setValueChangeMode(ValueChangeMode.LAZY);
         emailFilter.setWidthFull();
         filterRow.getCell(emailCol).setComponent(emailFilter);
 
         Select<String> roleFilter = new Select<>();
-        roleFilter.setItems("", "Admin", "Billing", "Developer", "Viewer");
+        roleFilter.setItems("Admin", "Billing", "Developer", "Viewer");
+        roleFilter.setEmptySelectionAllowed(true);
+        roleFilter.setEmptySelectionCaption("All roles");
         roleFilter.setPlaceholder("All roles");
         roleFilter.setWidthFull();
         filterRow.getCell(roleCol).setComponent(roleFilter);
@@ -157,7 +168,7 @@ public class UsersView extends View {
         Runnable applyFilter = () -> dataView.setFilter(u ->
                 (nameFilter.getValue().isBlank() || u.name().toLowerCase().contains(nameFilter.getValue().toLowerCase())) &&
                         (emailFilter.getValue().isBlank() || u.email().toLowerCase().contains(emailFilter.getValue().toLowerCase())) &&
-                        (roleFilter.getValue() == null || roleFilter.getValue().isBlank() || roleFilter.getValue().equals(u.role())));
+                        (roleFilter.getValue() == null || roleFilter.getValue().equals(u.role())));
 
         nameFilter.addValueChangeListener(e -> applyFilter.run());
         emailFilter.addValueChangeListener(e -> applyFilter.run());
