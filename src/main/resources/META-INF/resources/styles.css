@@ -10,6 +10,7 @@
 @import "./settings-view.css";
 @import "./components-view.css";
 @import "./component-previews.css";
+@import "./clone-banner.css";
 
 @media (max-width: 767px) {
   .floating-action {
