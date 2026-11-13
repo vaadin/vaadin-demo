@@ -23,6 +23,7 @@
 
 @import "./misc/component-previews.css";
 @import "./misc/prism.css";
+@import "./clone-banner.css";
 
 hr {
   background: var(--vaadin-border-color-secondary);

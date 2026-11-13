@@ -1,0 +1,43 @@
+/* Hosted runs only (see CloneBanner.java); hidden on phones. */
+.clone-banner {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  html:has(.clone-banner) {
+    --clone-banner-height: 2.5rem;
+
+    vaadin-app-layout {
+      padding-top: var(--clone-banner-height);
+    }
+
+    vaadin-app-layout::part(drawer),
+    vaadin-app-layout::part(navbar) {
+      top: var(--clone-banner-height);
+    }
+  }
+
+  .clone-banner {
+    position: fixed;
+    top: 0;
+    inset-inline: 0;
+    z-index: 2;
+    height: var(--clone-banner-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--vaadin-gap-s);
+    padding-inline: var(--vaadin-padding-m);
+    font-size: var(--aura-font-size-s);
+    color: var(--vaadin-text-color-secondary);
+
+    .clone-banner-label {
+      white-space: nowrap;
+    }
+
+    .clone-banner-command {
+      min-width: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+  }
+}
