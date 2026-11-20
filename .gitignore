@@ -1,3 +1,11 @@
 node_modules
 target
 src/main/frontend/generated
+/.idea/
+**/frontend/generated/
+vite.generated.ts
+/.ai/mcp/mcp.json
+/.junie/
+/.windsurf/
+/.playwright-mcp/
+/.mvn/
