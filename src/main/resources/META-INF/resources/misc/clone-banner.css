@@ -1,0 +1,98 @@
+/* Clone banner on hosted runs (CloneBanner.java). */
+/* Pinned above the app, which moves down to make room for it. On narrow
+   screens, and when zoomed in, the command is cut short; the copy button
+   still copies all of it. */
+html:has(aside.clone-banner) {
+  --clone-banner-height: 2.5rem;
+
+  vaadin-app-layout {
+    padding-top: var(--clone-banner-height);
+
+    &::part(drawer),
+    &::part(navbar) {
+      top: var(--clone-banner-height);
+    }
+  }
+}
+
+aside.clone-banner {
+  align-items: center;
+  box-sizing: border-box;
+  color: var(--vaadin-text-color-secondary);
+  display: flex;
+  font-size: var(--aura-font-size-s);
+  gap: var(--vaadin-gap-s);
+  height: var(--clone-banner-height);
+  inset-inline: 0;
+  justify-content: center;
+  padding-inline: var(--vaadin-padding-m);
+  position: fixed;
+  top: 0;
+  z-index: 2;
+
+  > span.label {
+    white-space: nowrap;
+  }
+
+  > code.command {
+    color: var(--vaadin-text-color);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The check mark sits on top of the copy icon and replaces it while the
+     button has data-copied, set for two seconds after a copy. */
+  > vaadin-button.copy {
+    flex: none;
+
+    span.icons {
+      display: grid;
+
+      > span {
+        display: flex;
+        grid-area: 1 / 1;
+        transition-duration: 300ms;
+        transition-property: filter, opacity, scale;
+        transition-timing-function: ease-in-out;
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
+      }
+
+      > span.check-icon {
+        color: var(--aura-green-text);
+        filter: blur(4px);
+        opacity: 0;
+        scale: 0.25;
+      }
+    }
+
+    &[data-copied] span.icons {
+      > span.check-icon {
+        filter: none;
+        opacity: 1;
+        scale: 1;
+      }
+
+      > span.copy-icon {
+        filter: blur(4px);
+        opacity: 0;
+        scale: 0.25;
+      }
+    }
+  }
+
+  /* Announces the copy to screen readers; visually hidden. */
+  > span.status {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}

@@ -21,6 +21,7 @@
 @import "./views/settings-view.css";
 @import "./views/users-view.css";
 
+@import "./misc/clone-banner.css";
 @import "./misc/component-previews.css";
 @import "./misc/prism.css";
 

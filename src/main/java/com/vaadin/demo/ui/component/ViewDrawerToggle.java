@@ -9,7 +9,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
  */
 public class ViewDrawerToggle extends DrawerToggle {
 
-    private static final String TEXT = "Toggle Navigation Panel";
+    private static final String TEXT = "Toggle navigation panel";
 
     public ViewDrawerToggle() {
         addThemeVariants(ButtonVariant.TERTIARY);

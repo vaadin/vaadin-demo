@@ -290,8 +290,8 @@ public class DashboardView extends View {
      */
     private HorizontalLayout createSelectionBar() {
         clearSelection.addThemeVariants(ButtonVariant.TERTIARY);
-        clearSelection.setAriaLabel("Clear Selection");
-        clearSelection.setTooltipText("Clear Selection");
+        clearSelection.setAriaLabel("Clear selection");
+        clearSelection.setTooltipText("Clear selection");
         clearSelection.addClickListener(e -> clearSelection());
 
         // At the far end, so a changing count never moves them
@@ -437,8 +437,8 @@ public class DashboardView extends View {
     private Button createRowActions(Order order) {
         Button toggle = new Button(Lucide.SQUARE_ARROW_OUT_UP_RIGHT.create(), e -> toggleDetails(order));
         toggle.addThemeVariants(ButtonVariant.TERTIARY);
-        toggle.setAriaLabel("Toggle Details");
-        toggle.setTooltipText("Toggle Details");
+        toggle.setAriaLabel("Toggle details");
+        toggle.setTooltipText("Toggle details");
         return toggle;
     }
 
