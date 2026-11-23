@@ -11,10 +11,10 @@
 @import "./components-view.css";
 @import "./component-previews.css";
 
-/* Only the icon shows on phones, so view actions keep room in the header
-   (ViewSourceButton.java). */
+/* Buttons that show only their icon on phones, to fit in a view header.
+   Give them an ARIA label, as the hidden text no longer names them. */
 @media (max-width: 767px) {
-  .view-source-button::part(label) {
+  .icon-only-on-phone::part(label) {
     display: none;
   }
 }

@@ -54,6 +54,8 @@ public class ProductsView extends View {
 
         Button addProduct = new Button("Add Product", Lucide.PLUS.create());
         addProduct.addThemeVariants(ButtonVariant.PRIMARY);
+        addProduct.addClassName("icon-only-on-phone");
+        addProduct.setAriaLabel("Add Product");
         addProduct.addClickListener(e -> openProductDialog(null));
 
         ViewSourceButton viewSource = new ViewSourceButton(ProductsView.class, sourceService);

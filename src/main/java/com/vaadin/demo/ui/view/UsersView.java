@@ -58,6 +58,8 @@ public class UsersView extends View {
 
         Button inviteUser = new Button("Invite User", Lucide.MAIL_PLUS.create(), e -> Notifications.show("Invite not yet implemented"));
         inviteUser.addThemeVariants(ButtonVariant.PRIMARY);
+        inviteUser.addClassName("icon-only-on-phone");
+        inviteUser.setAriaLabel("Invite User");
 
         ViewSourceButton viewSource = new ViewSourceButton(UsersView.class, sourceService);
 
