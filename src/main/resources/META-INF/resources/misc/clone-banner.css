@@ -1,0 +1,45 @@
+/* Clone banner on hosted runs (CloneBanner.java). */
+/* Hidden on phones. On wider screens it's pinned above the app, and the app
+   layout, its drawer and its navbar move down to make room for it. */
+html:has(div.clone-banner) {
+  @media (min-width: 768px) {
+    --clone-banner-height: 2.5rem;
+
+    vaadin-app-layout {
+      padding-top: var(--clone-banner-height);
+
+      &::part(drawer),
+      &::part(navbar) {
+        top: var(--clone-banner-height);
+      }
+    }
+  }
+}
+
+div.clone-banner {
+  display: none;
+
+  @media (min-width: 768px) {
+    align-items: center;
+    color: var(--vaadin-text-color-secondary);
+    display: flex;
+    font-size: var(--aura-font-size-s);
+    gap: var(--vaadin-gap-s);
+    height: var(--clone-banner-height);
+    inset-inline: 0;
+    justify-content: center;
+    padding-inline: var(--vaadin-padding-m);
+    position: fixed;
+    top: 0;
+    z-index: 2;
+  }
+
+  > span.label {
+    white-space: nowrap;
+  }
+
+  > vaadin-button.command {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    min-width: 0;
+  }
+}
