@@ -94,12 +94,10 @@
       display: grid;
       grid-template-columns: 3fr 1fr;
       grid-template-rows: 1fr;
-      order: 1;
     }
 
     .dashboard-side {
       order: 2;
-      overflow: visible;
     }
 
     .orders-card {
