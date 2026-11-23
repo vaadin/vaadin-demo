@@ -75,7 +75,7 @@ public class ComponentsView extends View {
 
         H1 title = new H1("Components");
 
-        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(ComponentsView.class, sourceService).open());
+        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(ComponentsView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
 
         return new ViewHeader(toggle, title, viewSource);
@@ -123,7 +123,7 @@ public class ComponentsView extends View {
         card.add(preview);
         card.addClassNames(classNames);
         sourceService.getDocs(componentClass)
-                .ifPresent(docs -> card.addToFooter(new DocsLink(title, docs.docsUrl())));
+                .ifPresent(docs -> card.setHeaderSuffix(new DocsLink(title, docs.docsUrl())));
         return card;
     }
 

@@ -43,6 +43,38 @@
     }
   }
 
+  .stat-card {
+    --vaadin-card-title-color: var(--vaadin-text-color-secondary);
+    --vaadin-card-title-font-size: var(--aura-font-size-m);
+    --vaadin-card-title-font-weight: var(--aura-font-weight-regular);
+    --vaadin-card-title-line-height: var(--aura-line-height-m);
+  }
+
+  .stat-value {
+    font-size: round(var(--aura-font-size-xl) * 1.25, 0.0625rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--aura-font-weight-semibold);
+  }
+
+  /* The filters and the selection bar share one cell, so the toolbar keeps
+     the height of the taller one and the grid stays put when they swap. */
+  .orders-toolbar {
+    display: grid;
+
+    > * {
+      grid-area: 1 / 1;
+    }
+
+    &.selecting > .orders-filters,
+    &:not(.selecting) > .selection-bar {
+      visibility: hidden;
+    }
+  }
+
+  .customer-filter {
+    width: 20rem;
+  }
+
   .customer-cell > vaadin-avatar {
     flex: none;
   }

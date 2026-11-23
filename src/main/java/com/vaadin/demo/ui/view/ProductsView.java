@@ -57,7 +57,7 @@ public class ProductsView extends View {
         addProduct.addClassName("floating-action");
         addProduct.addClickListener(e -> openProductDialog(null));
 
-        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(ProductsView.class, sourceService).open());
+        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(ProductsView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
 
         return new ViewHeader(toggle, title, addProduct, viewSource);

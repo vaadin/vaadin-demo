@@ -48,7 +48,7 @@ public class SettingsView extends View {
 
         H1 title = new H1("Settings");
 
-        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(SettingsView.class, sourceService).open());
+        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(SettingsView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
 
         return new ViewHeader(toggle, title, viewSource);

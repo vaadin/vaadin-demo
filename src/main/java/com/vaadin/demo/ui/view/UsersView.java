@@ -60,7 +60,7 @@ public class UsersView extends View {
         inviteUser.addThemeVariants(ButtonVariant.PRIMARY);
         inviteUser.addClassName("floating-action");
 
-        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(UsersView.class, sourceService).open());
+        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(UsersView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
 
         return new ViewHeader(toggle, title, inviteUser, viewSource);

@@ -29,7 +29,6 @@ import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -72,6 +71,8 @@ public class DashboardView extends View {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d, yyyy");
     private static final String ROW_GAP = "var(--vaadin-gap-m)";
     private static final String LABEL_GAP = "var(--vaadin-gap-s)";
+    private static final String BREAKDOWN_ROW_GAP = "var(--vaadin-gap-l)";
+    private static final String BREAKDOWN_LABEL_GAP = "var(--vaadin-gap-xs)";
     private static final List<String> STATUSES = List.of("Completed", "Processing", "Pending", "Failed");
 
     private final List<Order> orders = SampleData.orders();
@@ -79,7 +80,10 @@ public class DashboardView extends View {
 
     private final Badge selectionBadge = new Badge();
     private final Button bulkArchive = new Button("Archive");
-    private final HorizontalLayout selectionBar = new HorizontalLayout(selectionBadge, bulkArchive);
+    private final Button clearSelection = new Button("Clear Selection");
+    private final HorizontalLayout selectionBar = new HorizontalLayout(selectionBadge, bulkArchive, clearSelection);
+    private final Div toolbar = new Div();
+    private final TextField customerFilter = new TextField();
     private final Map<String, Grid.Column<Order>> toggleableColumns = new LinkedHashMap<>();
 
     private Grid<Order> grid;
@@ -101,7 +105,7 @@ public class DashboardView extends View {
 
         H1 title = new H1("Dashboard");
 
-        Button viewSource = new Button("View source", Lucide.CODE.create(), e -> new SourceViewerDialog(DashboardView.class, sourceService).open());
+        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(DashboardView.class, sourceService).open());
         viewSource.addThemeVariants(ButtonVariant.TERTIARY);
 
         return new ViewHeader(toggle, title, viewSource);
@@ -163,7 +167,10 @@ public class DashboardView extends View {
         trend.setIcon(metric.change() >= 0 ? VaadinIcon.TRENDING_UP.create() : VaadinIcon.TRENDING_DOWN.create());
         Tooltip.forComponent(trend).setText("Compared with the previous " + metrics.periodDays() + " days");
 
-        HorizontalLayout figure = new HorizontalLayout(new H5(metric.value()), trend);
+        Span value = new Span(metric.value());
+        value.addClassName("stat-value");
+
+        HorizontalLayout figure = new HorizontalLayout(value, trend);
         figure.setAlignItems(Alignment.CENTER);
         figure.setJustifyContentMode(JustifyContentMode.BETWEEN);
         figure.setPadding(false);
@@ -172,6 +179,7 @@ public class DashboardView extends View {
         figure.setSpacing("0.5rem");
 
         Card card = new Card();
+        card.addClassName("stat-card");
         card.add(figure);
         card.setTitle(metric.label());
         return card;
@@ -183,7 +191,7 @@ public class DashboardView extends View {
     private Card createStatusBreakdownCard() {
         VerticalLayout rows = new VerticalLayout();
         rows.setPadding(false);
-        rows.setSpacing(ROW_GAP);
+        rows.setSpacing(BREAKDOWN_ROW_GAP);
 
         metrics.statusBreakdown().forEach(share -> {
             HorizontalLayout labels = new HorizontalLayout(
@@ -197,10 +205,11 @@ public class DashboardView extends View {
 
             ProgressBar bar = new ProgressBar(0, 1, share.share());
             bar.getElement().setAttribute("aria-label", share.status() + " share of all orders");
+            bar.addClassName(StatusBadge.accentClassName(share.status()));
 
             VerticalLayout row = new VerticalLayout(labels, bar);
             row.setPadding(false);
-            row.setSpacing(LABEL_GAP);
+            row.setSpacing(BREAKDOWN_LABEL_GAP);
             rows.add(row);
         });
 
@@ -218,7 +227,7 @@ public class DashboardView extends View {
     private Card createOrdersCard() {
         Grid<Order> ordersGrid = createOrdersGrid();
 
-        VerticalLayout body = new VerticalLayout(createFilterBar(), createSelectionBar(), ordersGrid);
+        VerticalLayout body = new VerticalLayout(createToolbar(), ordersGrid);
         body.setSizeFull();
         body.setPadding(false);
         body.setFlexGrow(1, ordersGrid);
@@ -233,18 +242,32 @@ public class DashboardView extends View {
     }
 
     /**
+     * The filters, swapped for the selection actions while rows are selected.
+     * Both occupy the same space, so selecting rows doesn't move the grid.
+     */
+    private Div createToolbar() {
+        toolbar.add(createFilterBar(), createSelectionBar());
+        toolbar.addClassName("orders-toolbar");
+        return toolbar;
+    }
+
+    /**
      * Filters above the grid rather than in a header row, so every column header
-     * sits directly above its own data.
+     * sits directly above its own data. The placeholders, tooltips and ARIA
+     * labels say what each filter does, so they need no visible labels.
      */
     private HorizontalLayout createFilterBar() {
-        TextField customerFilter = new TextField("Customer");
+        customerFilter.addClassName("customer-filter");
+        customerFilter.setAriaLabel("Filter by customer");
+        customerFilter.setTooltipText("Filter by customer name");
         customerFilter.setClearButtonVisible(true);
-        customerFilter.setPlaceholder("Filter by name...");
+        customerFilter.setPlaceholder("Filter by customer…");
         customerFilter.setPrefixComponent(Lucide.SEARCH.create());
         customerFilter.setValueChangeMode(ValueChangeMode.LAZY);
 
         Select<String> statusFilter = new Select<>();
-        statusFilter.setLabel("Status");
+        statusFilter.setAriaLabel("Filter by status");
+        Tooltip.forComponent(statusFilter).setText("Filter by status");
         statusFilter.setItems(STATUSES);
         statusFilter.setEmptySelectionAllowed(true);
         statusFilter.setEmptySelectionCaption("All statuses");
@@ -264,25 +287,28 @@ public class DashboardView extends View {
         HorizontalLayout bar = new HorizontalLayout(customerFilter, statusFilter);
         bar.setPadding(false);
         bar.setWrap(true);
-        bar.setAlignItems(Alignment.END);
         bar.setWidthFull();
         bar.addClassName("orders-filters");
         return bar;
     }
 
     /**
-     * Selection count and bulk action, shown above the grid while rows are selected.
+     * Selection count and bulk actions, shown in place of the filters while
+     * rows are selected.
      */
     private HorizontalLayout createSelectionBar() {
-        selectionBadge.addThemeVariants(BadgeVariant.CONTRAST);
-
         bulkArchive.setIcon(Lucide.ARCHIVE.create());
         bulkArchive.addThemeVariants(ButtonVariant.TERTIARY);
         bulkArchive.addClickListener(e -> archiveSelection());
 
+        clearSelection.setIcon(Lucide.X.create());
+        clearSelection.addThemeVariants(ButtonVariant.TERTIARY);
+        clearSelection.addClickListener(e -> clearSelection());
+
         selectionBar.setAlignItems(Alignment.CENTER);
         selectionBar.setPadding(false);
-        selectionBar.setVisible(false);
+        selectionBar.setWrap(true);
+        selectionBar.addClassName("selection-bar");
         return selectionBar;
     }
 
@@ -384,10 +410,10 @@ public class DashboardView extends View {
      */
     private void addContextMenu() {
         GridContextMenu<Order> contextMenu = grid.addContextMenu();
-        contextMenu.addItem("Toggle details", e -> e.getItem().ifPresent(this::toggleDetails));
-        contextMenu.addItem("Mark as completed", e -> e.getItem().ifPresent(
+        contextMenu.addItem("Toggle Details", e -> e.getItem().ifPresent(this::toggleDetails));
+        contextMenu.addItem("Mark as Completed", e -> e.getItem().ifPresent(
                 order -> Notifications.show(order.id() + " marked as completed", NotificationVariant.SUCCESS)));
-        contextMenu.addItem("Copy order ID", e -> e.getItem().ifPresent(
+        contextMenu.addItem("Copy Order ID", e -> e.getItem().ifPresent(
                 order -> Notifications.show("Copied " + order.id())));
     }
 
@@ -406,8 +432,8 @@ public class DashboardView extends View {
     private Button createRowActions(Order order) {
         Button toggle = new Button(Lucide.SQUARE_ARROW_OUT_UP_RIGHT.create(), e -> toggleDetails(order));
         toggle.addThemeVariants(ButtonVariant.TERTIARY);
-        toggle.setAriaLabel("Toggle details");
-        toggle.setTooltipText("Toggle details");
+        toggle.setAriaLabel("Toggle Details");
+        toggle.setTooltipText("Toggle Details");
         return toggle;
     }
 
@@ -434,13 +460,23 @@ public class DashboardView extends View {
     }
 
     private void updateSelection(Set<Order> selection) {
-        selectionBar.setVisible(!selection.isEmpty());
+        toolbar.setClassName("selecting", !selection.isEmpty());
         selectionBadge.setText(selection.size() + " selected");
+    }
+
+    /**
+     * Deselects all rows. The selection bar hides as a result, so focus moves
+     * to the filter that takes its place instead of being lost with the
+     * button that had it.
+     */
+    private void clearSelection() {
+        grid.deselectAll();
+        customerFilter.focus();
     }
 
     private void archiveSelection() {
         int count = grid.getSelectedItems().size();
-        grid.deselectAll();
+        clearSelection();
         Notifications.show(count + " orders archived", NotificationVariant.SUCCESS);
     }
 

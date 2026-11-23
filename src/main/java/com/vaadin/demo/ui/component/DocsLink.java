@@ -4,12 +4,12 @@ import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.flow.component.html.Anchor;
 
 /**
- * "See component documentation ↗" link to a component's documentation on
- * vaadin.com, opened in a new tab.
+ * Short "Docs ↗" link to a component's documentation on vaadin.com, opened
+ * in a new tab. Meant for a card header, next to the component name.
  */
 public class DocsLink extends Anchor {
 
-    private static final String TEXT = "See component documentation";
+    private static final String TEXT = "Docs";
 
     public DocsLink(String componentName, String docsUrl) {
         super(docsUrl, TEXT);

@@ -95,7 +95,7 @@ public class SourceViewerDialog extends Dialog {
             Card card = new Card();
             card.setTitle(component.name());
             ComponentPreviews.forDocsPage(component.page()).ifPresent(card::add);
-            card.addToFooter(new DocsLink(component.name(), component.docsUrl()));
+            card.setHeaderSuffix(new DocsLink(component.name(), component.docsUrl()));
             card.setWidthFull();
             list.add(card);
         });

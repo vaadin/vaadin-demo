@@ -87,7 +87,7 @@
   }
 }
 
-/* "See component documentation ↗" link in a card footer (DocsLink.java). */
+/* "Docs ↗" link in a card header (DocsLink.java). */
 .docs-link {
   align-items: center;
   display: inline-flex;

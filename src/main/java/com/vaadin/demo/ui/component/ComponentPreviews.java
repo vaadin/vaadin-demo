@@ -544,7 +544,7 @@ public final class ComponentPreviews {
      * Button opening a context menu on click rather than only on right-click.
      */
     public static Component contextMenu() {
-        Button target = new Button("Open menu", Lucide.ELLIPSIS_VERTICAL.create());
+        Button target = new Button("Open Menu", Lucide.ELLIPSIS_VERTICAL.create());
         target.setIconAfterText(true);
 
         ContextMenu menu = new ContextMenu(target);
@@ -660,7 +660,7 @@ public final class ComponentPreviews {
     }
 
     public static Component tooltip() {
-        Button button = new Button("Hover or focus me");
+        Button button = new Button("Hover or Focus Me");
         button.setTooltipText("Tooltips give short extra information");
         return preview("card-center", button);
     }

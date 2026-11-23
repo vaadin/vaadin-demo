@@ -15,8 +15,8 @@
     text-decoration: none;
   }
 
-  /* Previews start at the left here, in line with the card title and docs
-     link; the Components view keeps them centered. */
+  /* Previews start at the left here, in line with the card title; the
+     Components view keeps them centered. */
   .components-used .component-preview {
     justify-content: flex-start;
 
