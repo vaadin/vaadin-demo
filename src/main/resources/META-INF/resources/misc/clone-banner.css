@@ -43,7 +43,56 @@ aside.clone-banner {
     white-space: nowrap;
   }
 
-  > vaadin-button {
+  /* The check mark sits on top of the copy icon and replaces it while the
+     button has data-copied, set for two seconds after a copy. */
+  > vaadin-button.copy {
     flex: none;
+
+    span.icons {
+      display: grid;
+
+      > span {
+        display: flex;
+        grid-area: 1 / 1;
+        transition-duration: 300ms;
+        transition-property: filter, opacity, scale;
+        transition-timing-function: ease-in-out;
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
+      }
+
+      > span.check-icon {
+        color: var(--aura-green-text);
+        filter: blur(4px);
+        opacity: 0;
+        scale: 0.25;
+      }
+    }
+
+    &[data-copied] span.icons {
+      > span.check-icon {
+        filter: none;
+        opacity: 1;
+        scale: 1;
+      }
+
+      > span.copy-icon {
+        filter: blur(4px);
+        opacity: 0;
+        scale: 0.25;
+      }
+    }
+  }
+
+  /* Announces the copy to screen readers; visually hidden. */
+  > span.status {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
   }
 }

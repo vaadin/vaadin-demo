@@ -8,7 +8,6 @@ import com.vaadin.flow.component.clipboard.Clipboard;
 import com.vaadin.flow.component.html.Aside;
 import com.vaadin.flow.component.html.Code;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.NotificationVariant;
 
 /**
  * Banner pinned above the whole app that shows the git clone command, with a
@@ -21,7 +20,8 @@ import com.vaadin.flow.component.notification.NotificationVariant;
  */
 public class CloneBanner extends Aside {
 
-    private static final String COPY_TEXT = "Copy Clone Command";
+    private static final String COPY_TEXT = "Copy clone command";
+    private static final String COPIED_TEXT = "Clone command copied";
 
     public CloneBanner(String cloneUrl) {
         addClassName("clone-banner");
@@ -35,15 +35,53 @@ public class CloneBanner extends Aside {
         Code code = new Code(command);
         code.addClassName("command");
 
-        Button copy = new Button(Lucide.COPY.create());
+        // Announces the copy to screen readers, as the icon change is visual only
+        Span status = new Span();
+        status.addClassName("status");
+        status.getElement().setAttribute("role", "status");
+
+        Button copy = new Button(createCopyIcons());
+        copy.addClassName("copy");
         copy.addThemeVariants(ButtonVariant.SMALL, ButtonVariant.TERTIARY);
         copy.setAriaLabel(COPY_TEXT);
         copy.setTooltipText(COPY_TEXT);
 
         Clipboard.onClick(copy).writeText(command,
-                copied -> Notifications.show("Clone command copied", NotificationVariant.SUCCESS),
+                copied -> showCopied(copy, status),
                 err -> Notifications.show("Could not copy. Select the command to copy it manually."));
 
-        add(label, code, copy);
+        add(label, code, copy, status);
+    }
+
+    /**
+     * The copy icon, with a check mark stacked on it that replaces it while
+     * the button shows the copied state (see misc/clone-banner.css).
+     */
+    private static Span createCopyIcons() {
+        Span check = new Span(Lucide.CHECK.create());
+        check.addClassName("check-icon");
+
+        Span copy = new Span(Lucide.COPY.create());
+        copy.addClassName("copy-icon");
+
+        Span icons = new Span(check, copy);
+        icons.addClassName("icons");
+        return icons;
+    }
+
+    /**
+     * Swaps the copy icon for a check mark and announces the copy, both for
+     * two seconds. Runs in the browser, so repeated clicks restart the timer.
+     */
+    private static void showCopied(Button copy, Span status) {
+        copy.getElement().executeJs("""
+                this.setAttribute('data-copied', '');
+                $0.textContent = $1;
+                clearTimeout(this._copiedTimeout);
+                this._copiedTimeout = setTimeout(() => {
+                    this.removeAttribute('data-copied');
+                    $0.textContent = '';
+                }, 2000);
+                """, status.getElement(), COPIED_TEXT);
     }
 }
