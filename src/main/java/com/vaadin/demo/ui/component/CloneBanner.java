@@ -11,8 +11,9 @@ import com.vaadin.flow.component.html.Span;
 
 /**
  * Banner pinned above the whole app that shows the git clone command, with a
- * button that copies it to the clipboard. Added only to production (hosted)
- * runs, see {@link com.vaadin.demo.ui.CloneBannerInitListener}.
+ * button that copies it to the clipboard. Added on production (hosted) runs,
+ * or in development mode when enabled, see
+ * {@link com.vaadin.demo.ui.CloneBannerInitListener}.
  * <p>
  * A labelled landmark, so screen reader users can find it. The command is
  * plain text, so it can still be selected and copied by hand when the
