@@ -2,13 +2,14 @@ package com.vaadin.demo.ui.view;
 
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
+import com.vaadin.demo.ui.component.ToolbarButton;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.badge.Badge;
 import com.vaadin.flow.component.badge.BadgeVariant;
 import com.vaadin.flow.component.button.Button;
@@ -26,6 +27,7 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataView;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -46,19 +48,15 @@ public class ProductsView extends View {
      * Page header with drawer toggle, title, add product button, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Products");
 
-        Button addProduct = new Button("Add Product", Lucide.PLUS.create());
+        ToolbarButton addProduct = new ToolbarButton("Add Product", Lucide.PLUS.create());
         addProduct.addThemeVariants(ButtonVariant.PRIMARY);
         addProduct.addClickListener(e -> openProductDialog(null));
 
-        Button viewSource = new Button(Lucide.CODE.create(), e -> new SourceViewerDialog(ProductsView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
-        viewSource.setAriaLabel("View source");
-        viewSource.setTooltipText("View source");
+        ViewSourceButton viewSource = new ViewSourceButton(ProductsView.class, sourceService);
 
         return new ViewHeader(toggle, title, addProduct, viewSource);
     }
@@ -72,9 +70,9 @@ public class ProductsView extends View {
         grid.setSelectionMode(SelectionMode.NONE);
 
         var nameCol = grid.addColumn(SampleData.Product::name)
-                .setHeader("Name").setWidth("200px").setFlexGrow(2).setResizable(true).setSortable(true);
+                .setHeader("Name").setWidth("12.5rem").setFlexGrow(2).setResizable(true).setSortable(true);
         var categoryCol = grid.addColumn(SampleData.Product::category)
-                .setHeader("Category").setWidth("140px").setFlexGrow(1).setSortable(true);
+                .setHeader("Category").setWidth("8.75rem").setFlexGrow(1).setSortable(true);
         var priceCol = grid.addColumn(SampleData.Product::price)
                 .setHeader("Price").setAutoWidth(true).setFlexGrow(0).setSortable(true);
         var stockCol = grid.addColumn(SampleData.Product::stock)
@@ -112,18 +110,23 @@ public class ProductsView extends View {
         TextField nameFilter = new TextField();
         nameFilter.setClearButtonVisible(true);
         nameFilter.setPlaceholder("Filter name...");
+        nameFilter.setValueChangeMode(ValueChangeMode.LAZY);
         nameFilter.setWidthFull();
         filterRow.getCell(nameCol).setComponent(nameFilter);
 
         Select<String> categoryFilter = new Select<>();
-        categoryFilter.setItems("", "Software", "Infrastructure", "Marketing", "Sales", "Support",
+        categoryFilter.setItems("Software", "Infrastructure", "Marketing", "Sales", "Support",
                 "Developer", "Security", "Data", "Compliance", "Enterprise", "Tools");
+        categoryFilter.setEmptySelectionAllowed(true);
+        categoryFilter.setEmptySelectionCaption("All");
         categoryFilter.setPlaceholder("All");
         categoryFilter.setWidthFull();
         filterRow.getCell(categoryCol).setComponent(categoryFilter);
 
         Select<String> statusFilter = new Select<>();
-        statusFilter.setItems("", "Active", "Beta", "Deprecated", "Inactive");
+        statusFilter.setItems("Active", "Beta", "Deprecated", "Inactive");
+        statusFilter.setEmptySelectionAllowed(true);
+        statusFilter.setEmptySelectionCaption("All");
         statusFilter.setPlaceholder("All");
         statusFilter.setWidthFull();
         filterRow.getCell(statusCol).setComponent(statusFilter);
@@ -134,8 +137,8 @@ public class ProductsView extends View {
 
         Runnable applyFilter = () -> dataView.setFilter(p ->
                 (nameFilter.getValue().isBlank() || p.name().toLowerCase().contains(nameFilter.getValue().toLowerCase())) &&
-                        (categoryFilter.getValue() == null || categoryFilter.getValue().isBlank() || categoryFilter.getValue().equals(p.category())) &&
-                        (statusFilter.getValue() == null || statusFilter.getValue().isBlank() || statusFilter.getValue().equals(p.status())));
+                        (categoryFilter.getValue() == null || categoryFilter.getValue().equals(p.category())) &&
+                        (statusFilter.getValue() == null || statusFilter.getValue().equals(p.status())));
 
         nameFilter.addValueChangeListener(e -> applyFilter.run());
         categoryFilter.addValueChangeListener(e -> applyFilter.run());
@@ -163,7 +166,7 @@ public class ProductsView extends View {
 
         Dialog dialog = new Dialog(form);
         dialog.setHeaderTitle(product == null ? "Add Product" : "Edit Product");
-        dialog.setWidth("400px");
+        dialog.setWidth("25rem");
 
         Button save = new Button("Save", e -> {
             dialog.close();

@@ -1,174 +1,494 @@
 package com.vaadin.demo.ui.view;
 
+import com.vaadin.demo.data.OrderMetrics;
 import com.vaadin.demo.data.SampleData;
+import com.vaadin.demo.data.SampleData.Order;
 import com.vaadin.demo.service.SourceService;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
+import com.vaadin.demo.ui.component.StatusBadge;
+import com.vaadin.demo.ui.component.ToolbarButton;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
-import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.badge.Badge;
 import com.vaadin.flow.component.badge.BadgeVariant;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.card.Card;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.grid.ColumnTextAlign;
+import com.vaadin.flow.component.grid.FooterRow;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
+import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.ScrollerVariant;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.shared.Tooltip;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-
+/**
+ * Dashboard showing key figures derived from the order data, a status breakdown,
+ * and a feature-rich orders grid.
+ * <p>
+ * Layout is composed from Vaadin layout components. dashboard-view.css sizes
+ * and orders the main areas per screen size and sets the spacing between and
+ * within the cards, so it is defined in one place.
+ */
 @Route("")
 @RouteAlias("dashboard")
 @PageTitle("Dashboard — Vaadin Demo")
 public class DashboardView extends View {
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d, yyyy");
+    private static final List<String> STATUSES = List.of("Completed", "Processing", "Pending", "Failed");
+
+    private final List<Order> orders = SampleData.orders();
+    private final OrderMetrics metrics = new OrderMetrics(orders);
+
+    private final Button clearSelection = new Button(Lucide.X.create());
+    private final Span selectionCount = new Span();
+    private final HorizontalLayout selectionBar = new HorizontalLayout(clearSelection, selectionCount);
+    private final Div toolbar = new Div();
+    private final TextField customerFilter = new TextField();
+    private final Map<String, Grid.Column<Order>> toggleableColumns = new LinkedHashMap<>();
+
+    private Grid<Order> grid;
+    private GridListDataView<Order> dataView;
+    private FooterRow.FooterCell countCell;
+    private FooterRow.FooterCell totalCell;
+
     public DashboardView(SourceService sourceService) {
         addClassName("dashboard-view");
-
-        ViewHeader header = createHeader(sourceService);
-        Div content = createContent();
-
-        add(header, content);
-    }
-
-    /**
-     * Main content area containing the stat cards and recent orders card.
-     */
-    private Div createContent() {
-        Div content = new Div(createStatCards(), createOrdersCard());
-        content.addClassName("content");
-        return content;
+        add(createHeader(sourceService), createContent());
     }
 
     /**
      * Page header with drawer toggle, title, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Dashboard");
 
-        Button viewSource = new Button(Lucide.CODE.create(), e -> new SourceViewerDialog(DashboardView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
-        viewSource.setAriaLabel("View source");
-        viewSource.setTooltipText("View source");
+        ViewSourceButton viewSource = new ViewSourceButton(DashboardView.class, sourceService);
 
         return new ViewHeader(toggle, title, viewSource);
     }
 
     /**
-     * Row of KPI stat cards.
+     * Two columns: the orders grid and, beside it, the supporting cards. The
+     * stylesheet sizes and orders the columns; everything within them is
+     * composed from layout components.
      */
-    private Div createStatCards() {
-        Div cards = new Div(
-                createStatCard("Total Revenue", "$128,430", "+12.5%", true),
-                createStatCard("Active Users", "3,842", "+4.2%", true),
-                createStatCard("New Orders", "284", "+8.1%", true),
-                createStatCard("Churn Rate", "2.4%", "-0.3%", false)
-        );
-        cards.addClassName("stat-cards");
-        return cards;
+    private Div createContent() {
+        Div content = new Div(createOrdersCard(), createSideColumn());
+        content.addClassName("dashboard-content");
+        return content;
     }
 
     /**
-     * Card containing the recent orders grid.
+     * Supporting cards: the status breakdown and the key figures. The
+     * stylesheet arranges them per screen size: the figures are hidden on
+     * phones, side by side with the breakdown on tablet, and stacked below it
+     * on desktop. The scroller only comes into play on very short windows.
      */
-    private Card createOrdersCard() {
+    private Scroller createSideColumn() {
+        HorizontalLayout cards = new HorizontalLayout(createStatusBreakdownCard(), createFiguresGrid());
+        cards.setPadding(false);
+        cards.addClassName("dashboard-side-content");
+
+        Scroller scroller = new Scroller(cards);
+        scroller.addClassName("dashboard-side");
+        scroller.addThemeVariants(ScrollerVariant.OVERFLOW_INDICATORS);
+        return scroller;
+    }
+
+    /**
+     * The four key figures, one per line. Hidden on phones.
+     */
+    private HorizontalLayout createFiguresGrid() {
+        HorizontalLayout figures = new HorizontalLayout();
+        figures.setPadding(false);
+        figures.addClassName("stat-cards");
+
+        metrics.metrics().forEach(metric -> {
+            figures.add(createStatCard(metric));
+        });
+        return figures;
+    }
+
+    /**
+     * Single KPI card showing a figure with its period-over-period trend.
+     */
+    private Card createStatCard(OrderMetrics.Metric metric) {
+        boolean favorable = metric.favorable();
+        Badge trend = new Badge(metric.changeText());
+        trend.addThemeVariants(favorable ? BadgeVariant.SUCCESS : BadgeVariant.ERROR);
+        trend.setIcon(metric.change() >= 0 ? VaadinIcon.TRENDING_UP.create() : VaadinIcon.TRENDING_DOWN.create());
+        Tooltip.forComponent(trend).setText("Compared with the previous " + metrics.periodDays() + " days");
+
+        Span value = new Span(metric.value());
+        value.addClassName("stat-value");
+
+        HorizontalLayout figure = new HorizontalLayout(value, trend);
+        figure.setAlignItems(Alignment.CENTER);
+        figure.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        figure.setPadding(false);
+        // On narrow cards the trend badge drops below the value instead of overflowing
+        figure.setWrap(true);
+        figure.addClassName("stat-figure");
+
         Card card = new Card();
-        card.add(createOrdersGrid());
-        card.addClassNames(Aura.SURFACE_SOLID, "orders-card");
-        card.setHeader(createOrdersHeading());
-        card.setHeaderSuffix(createOrdersMenuBar());
+        card.addClassName("stat-card");
+        card.add(figure);
+        card.setTitle(metric.label());
         return card;
     }
 
     /**
-     * Heading for the orders section.
+     * Card breaking all orders down by fulfillment status, as a share of the total.
      */
-    private H2 createOrdersHeading() {
-        H2 heading = new H2("Recent Orders");
-        heading.addClassName("orders-heading");
-        return heading;
+    private Card createStatusBreakdownCard() {
+        VerticalLayout rows = new VerticalLayout();
+        rows.setPadding(false);
+        rows.addClassName("status-rows");
+
+        metrics.statusBreakdown().forEach(share -> {
+            HorizontalLayout labels = new HorizontalLayout(
+                    new StatusBadge(share.status()),
+                    new Span(share.count() + " orders - " + share.shareText()));
+            labels.setWidthFull();
+            labels.setPadding(false);
+            labels.setWrap(true);
+            labels.setAlignItems(Alignment.CENTER);
+            labels.setJustifyContentMode(JustifyContentMode.BETWEEN);
+
+            ProgressBar bar = new ProgressBar(0, 1, share.share());
+            bar.getElement().setAttribute("aria-label", share.status() + " share of all orders");
+            bar.addClassName(StatusBadge.accentClassName(share.status()));
+
+            VerticalLayout row = new VerticalLayout(labels, bar);
+            row.setPadding(false);
+            row.addClassName("status-row");
+            rows.add(row);
+        });
+
+        Card card = new Card();
+        card.addClassName("status-breakdown");
+        card.add(rows);
+        card.setTitle("Status breakdown");
+        card.setSubtitle(new Span(orders.size() + " orders in total"));
+        return card;
     }
 
     /**
-     * Menu bar with export and refresh actions for the orders card.
+     * Card wrapping the orders grid, with the column and export menu in its header.
+     */
+    private Card createOrdersCard() {
+        Grid<Order> ordersGrid = createOrdersGrid();
+
+        VerticalLayout body = new VerticalLayout(createToolbar(), ordersGrid);
+        body.setSizeFull();
+        body.setPadding(false);
+        body.setFlexGrow(1, ordersGrid);
+
+        Card card = new Card();
+        card.addClassNames(Aura.SURFACE_SOLID, "orders-card");
+        card.setSizeFull();
+        card.setTitle("Recent Orders");
+        card.setHeaderSuffix(createOrdersMenuBar());
+        card.add(body);
+        return card;
+    }
+
+    /**
+     * The filters, swapped for the selection actions while rows are selected.
+     * Both occupy the same space, so selecting rows doesn't move the grid.
+     */
+    private Div createToolbar() {
+        toolbar.add(createFilterBar(), createSelectionBar());
+        toolbar.addClassName("orders-toolbar");
+        return toolbar;
+    }
+
+    /**
+     * Filters above the grid rather than in a header row, so every column header
+     * sits directly above its own data. The placeholders, tooltips and ARIA
+     * labels say what each filter does, so they need no visible labels.
+     */
+    private HorizontalLayout createFilterBar() {
+        customerFilter.addClassName("customer-filter");
+        customerFilter.setAriaLabel("Filter by customer");
+        customerFilter.setTooltipText("Filter by customer name");
+        customerFilter.setClearButtonVisible(true);
+        customerFilter.setPlaceholder("Filter by customer…");
+        customerFilter.setPrefixComponent(Lucide.SEARCH.create());
+        customerFilter.setValueChangeMode(ValueChangeMode.LAZY);
+
+        Select<String> statusFilter = new Select<>();
+        statusFilter.setAriaLabel("Filter by status");
+        Tooltip.forComponent(statusFilter).setText("Filter by status");
+        statusFilter.setItems(STATUSES);
+        statusFilter.setEmptySelectionAllowed(true);
+        statusFilter.setEmptySelectionCaption("All statuses");
+        statusFilter.setPlaceholder("All statuses");
+
+        Runnable applyFilter = () -> {
+            String customer = customerFilter.getValue().trim().toLowerCase();
+            String status = statusFilter.getValue();
+            dataView.setFilter(order ->
+                    (customer.isEmpty() || order.customer().toLowerCase().contains(customer))
+                    && (status == null || status.equals(order.status())));
+        };
+
+        customerFilter.addValueChangeListener(e -> applyFilter.run());
+        statusFilter.addValueChangeListener(e -> applyFilter.run());
+
+        HorizontalLayout bar = new HorizontalLayout(customerFilter, statusFilter);
+        bar.setPadding(false);
+        bar.setWrap(true);
+        bar.setWidthFull();
+        bar.addClassName("orders-filters");
+        return bar;
+    }
+
+    /**
+     * Clear-selection button, selection count and bulk actions, shown in
+     * place of the filters while rows are selected. The actions are only
+     * shown as icons on phones.
+     */
+    private HorizontalLayout createSelectionBar() {
+        clearSelection.addThemeVariants(ButtonVariant.TERTIARY);
+        clearSelection.setAriaLabel("Clear Selection");
+        clearSelection.setTooltipText("Clear Selection");
+        clearSelection.addClickListener(e -> clearSelection());
+
+        // At the far end, so a changing count never moves them
+        selectionBar.addToEnd(
+                createBulkAction("Mark as Completed", Lucide.CIRCLE_CHECK, "marked as completed"),
+                createBulkAction("Export", Lucide.DOWNLOAD, "exported"),
+                createBulkAction("Archive", Lucide.ARCHIVE, "archived"));
+        selectionBar.setAlignItems(Alignment.CENTER);
+        selectionBar.setPadding(false);
+        selectionBar.setWrap(true);
+        selectionBar.addClassName("selection-bar");
+        return selectionBar;
+    }
+
+    /**
+     * Button applying an action to all selected rows. The demo only reports
+     * the outcome, such as "3 orders archived".
+     */
+    private ToolbarButton createBulkAction(String text, Lucide icon, String outcome) {
+        ToolbarButton button = new ToolbarButton(text, icon.create());
+        button.addThemeVariants(ButtonVariant.TERTIARY);
+        button.addClickListener(e -> applyToSelection(outcome));
+        return button;
+    }
+
+    /**
+     * Menu bar toggling column visibility and offering an export action.
      */
     private MenuBar createOrdersMenuBar() {
         MenuBar menuBar = new MenuBar();
+
+        MenuItem columns = menuBar.addItem("Columns");
+        toggleableColumns.forEach((label, column) -> {
+            MenuItem item = columns.getSubMenu().addItem(label,
+                    e -> column.setVisible(e.getSource().isChecked()));
+            item.setCheckable(true);
+            item.setChecked(true);
+        });
+
         menuBar.addItem("Export", e -> Notifications.show("Export started — your file will be ready shortly"));
-        menuBar.addItem("Refresh", e -> Notifications.show("Data refreshed", NotificationVariant.SUCCESS));
         return menuBar;
     }
 
     /**
-     * Grid listing recent orders with ID, customer, amount, status, and date columns.
+     * Grid of recent orders, demonstrating multi-sort, an aggregating footer,
+     * row details, selection, and a context menu.
      */
-    private Grid<SampleData.Order> createOrdersGrid() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
-        Grid<SampleData.Order> grid = new Grid<>(SampleData.Order.class, false);
+    private Grid<Order> createOrdersGrid() {
+        grid = new Grid<>(Order.class, false);
+        grid.addThemeVariants(GridVariant.NO_BORDER, GridVariant.ROW_STRIPES);
+        grid.setSelectionMode(SelectionMode.MULTI);
+        grid.setColumnReorderingAllowed(true);
+        grid.setEmptyStateText("No orders match the current filters.");
+        grid.setSizeFull();
 
-        grid.addColumn(SampleData.Order::id).setHeader("Order ID").setAutoWidth(true).setFlexGrow(0).setSortable(true);
-        grid.addColumn(SampleData.Order::customer).setHeader("Customer").setFlexGrow(1).setSortable(true);
-        grid.addColumn(SampleData.Order::amount).setHeader("Amount").setAutoWidth(true).setFlexGrow(0);
-        grid.addComponentColumn(o -> createStatusBadge(o.status())).setHeader("Status").setWidth("7rem").setFlexGrow(0);
-        grid.addColumn(o -> o.date().format(dateTimeFormatter)).setHeader("Date").setAutoWidth(true).setFlexGrow(0).setSortable(true);
+        grid.addColumn(Order::id)
+                .setHeader("Order ID")
+                .setAutoWidth(true)
+                .setFlexGrow(0)
+                .setSortable(true);
 
-        grid.addThemeVariants(GridVariant.NO_BORDER);
-        grid.setSelectionMode(SelectionMode.NONE);
-        grid.setHeightFull();
-        grid.setItems(SampleData.orders());
+        Grid.Column<Order> customerColumn = grid.addComponentColumn(this::createCustomerCell)
+                .setHeader("Customer")
+                .setComparator(Order::customer)
+                .setWidth("8rem")
+                .setResizable(true)
+                .setTooltipGenerator(order -> order.customer() + " — " + order.id());
+
+        Grid.Column<Order> amountColumn = grid.addColumn(Order::amount)
+                .setHeader("Amount")
+                .setComparator(Comparator.comparingDouble(Order::amountValue))
+                .setTextAlign(ColumnTextAlign.END)
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+
+        Grid.Column<Order> statusColumn = grid.addComponentColumn(order -> new StatusBadge(order.status()))
+                .setHeader("Status")
+                .setComparator(Order::status)
+                .setWidth("7rem")
+                .setFlexGrow(0);
+
+        Grid.Column<Order> dateColumn = grid.addColumn(order -> order.date().format(DATE_FORMAT))
+                .setHeader("Date")
+                .setComparator(Order::date)
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+
+        grid.addComponentColumn(this::createRowActions)
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+
+        toggleableColumns.put("Amount", amountColumn);
+        toggleableColumns.put("Status", statusColumn);
+        toggleableColumns.put("Date", dateColumn);
+
+        grid.setItemDetailsRenderer(new ComponentRenderer<>(this::createOrderDetails));
+        grid.setDetailsVisibleOnClick(false);
+
+        dataView = grid.setItems(orders);
+
+        addFooterRow(customerColumn, amountColumn);
+        addContextMenu();
+
+        grid.asMultiSelect().addSelectionListener(e -> updateSelection(e.getAllSelectedItems()));
+        dataView.addItemCountChangeListener(e -> updateFooter());
+        updateFooter();
         return grid;
     }
 
     /**
-     * Single KPI card showing a metric value with a trend badge.
+     * Footer row aggregating whatever the filters currently leave visible.
      */
-    private Card createStatCard(String label, String value, String trend, boolean favorable) {
-        Span valueSpan = new Span(value);
-        valueSpan.addClassName("stat-value");
-
-        Badge trendBadge = new Badge(trend);
-        trendBadge.addClassName("stat-trend");
-        trendBadge.addThemeVariants(favorable ? BadgeVariant.SUCCESS : BadgeVariant.ERROR);
-        trendBadge.setIcon(favorable ? VaadinIcon.TRENDING_UP.create() : VaadinIcon.TRENDING_DOWN.create());
-
-        Card card = new Card();
-        card.add(valueSpan, trendBadge);
-        card.addClassName("stat-card");
-        card.setTitle(label);
-        return card;
+    private void addFooterRow(Grid.Column<Order> customerColumn, Grid.Column<Order> amountColumn) {
+        FooterRow footerRow = grid.appendFooterRow();
+        countCell = footerRow.getCell(customerColumn);
+        totalCell = footerRow.getCell(amountColumn);
     }
 
     /**
-     * Badge indicating the fulfillment status of an order.
+     * Right-click actions on a single row.
      */
-    private Badge createStatusBadge(String status) {
-        Badge badge = new Badge(status);
-        BadgeVariant variant = switch (status) {
-            case "Completed" -> BadgeVariant.SUCCESS;
-            case "Processing" -> BadgeVariant.FILLED;
-            case "Failed" -> BadgeVariant.ERROR;
-            case "Pending" -> BadgeVariant.CONTRAST;
-            default -> throw new IllegalStateException("Unexpected value: " + status);
-        };
-        badge.addThemeVariants(variant);
-        return badge;
+    private void addContextMenu() {
+        GridContextMenu<Order> contextMenu = grid.addContextMenu();
+        contextMenu.addItem("Toggle Details", e -> e.getItem().ifPresent(this::toggleDetails));
+        contextMenu.addItem("Mark as Completed", e -> e.getItem().ifPresent(
+                order -> Notifications.show(order.id() + " marked as completed", NotificationVariant.SUCCESS)));
+        contextMenu.addItem("Copy Order ID", e -> e.getItem().ifPresent(
+                order -> Notifications.show("Copied " + order.id())));
     }
 
+    private HorizontalLayout createCustomerCell(Order order) {
+        Span name = new Span(order.customer());
+        name.addClassName("customer-name");
+
+        HorizontalLayout cell = new HorizontalLayout(new Avatar(order.customer()), name);
+        cell.setAlignItems(Alignment.CENTER);
+        cell.setPadding(false);
+        cell.setWidthFull();
+        cell.addClassName("customer-cell");
+        return cell;
+    }
+
+    private Button createRowActions(Order order) {
+        Button toggle = new Button(Lucide.SQUARE_ARROW_OUT_UP_RIGHT.create(), e -> toggleDetails(order));
+        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        toggle.setAriaLabel("Toggle Details");
+        toggle.setTooltipText("Toggle Details");
+        return toggle;
+    }
+
+    /**
+     * Expanded row content for a single order.
+     */
+    private Component createOrderDetails(Order order) {
+        VerticalLayout details = new VerticalLayout(
+                new Span("Customer: " + order.customer()),
+                new Span("Amount: " + order.amount()),
+                new Span("Status: " + order.status()),
+                new Span("Ordered: " + order.date().format(DATE_FORMAT)));
+        details.setPadding(false);
+        details.addClassName("order-details");
+        return details;
+    }
+
+    /**
+     * Shows or hides a row's details. Both the row button and the context menu
+     * go through here.
+     */
+    private void toggleDetails(Order order) {
+        grid.setDetailsVisible(order, !grid.isDetailsVisible(order));
+    }
+
+    private void updateSelection(Set<Order> selection) {
+        toolbar.setClassName("selecting", !selection.isEmpty());
+        selectionCount.setText(selection.size() + " selected");
+    }
+
+    /**
+     * Deselects all rows. The selection bar hides as a result, so focus moves
+     * to the filter that takes its place instead of being lost with the
+     * button that had it.
+     */
+    private void clearSelection() {
+        grid.deselectAll();
+        customerFilter.focus();
+    }
+
+    private void applyToSelection(String outcome) {
+        int count = grid.getSelectedItems().size();
+        clearSelection();
+        Notifications.show(count + (count == 1 ? " order " : " orders ") + outcome, NotificationVariant.SUCCESS);
+    }
+
+    private void updateFooter() {
+        int count = dataView.getItemCount();
+        double total = dataView.getItems().mapToDouble(Order::amountValue).sum();
+        countCell.setText(count + (count == 1 ? " order" : " orders"));
+        totalCell.setText(OrderMetrics.money(total));
+    }
 }

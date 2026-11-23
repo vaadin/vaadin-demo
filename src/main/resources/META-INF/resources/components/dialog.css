@@ -1,0 +1,36 @@
+/* Source code dialog (SourceViewerDialog.java). */
+vaadin-dialog.source-viewer-dialog {
+  a.github-link {
+    align-items: center;
+    background: var(--aura-accent-color);
+    border: 1px solid var(--vaadin-border-color-secondary);
+    border-radius: var(--vaadin-radius-m);
+    box-shadow: var(--aura-shadow-s);
+    color: var(--aura-accent-contrast-color);
+    display: flex;
+    font-weight: var(--aura-font-weight-medium);
+    gap: var(--vaadin-gap-s);
+    padding-block: var(--vaadin-padding-block-container);
+    padding-inline: var(--vaadin-padding-m);
+    padding-inline-end: var(--vaadin-padding-s);
+    text-decoration: none;
+  }
+
+  /* The "Components used here" tab */
+  vaadin-vertical-layout.components-used {
+    /* Previews start at the left here, in line with the card title; the
+       Components view keeps them centered. */
+    div.component-preview {
+      justify-content: flex-start;
+
+      span.preview-hint {
+        text-align: start;
+      }
+    }
+
+    /* Give the grid preview a fixed height so the list stays scannable. */
+    vaadin-grid {
+      height: 16rem;
+    }
+  }
+}

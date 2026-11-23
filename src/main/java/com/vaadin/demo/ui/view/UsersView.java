@@ -2,14 +2,15 @@ package com.vaadin.demo.ui.view;
 
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
+import com.vaadin.demo.ui.component.ToolbarButton;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.avatar.AvatarVariant;
 import com.vaadin.flow.component.badge.Badge;
@@ -29,6 +30,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataView;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -50,18 +52,15 @@ public class UsersView extends View {
      * Page header with drawer toggle, title, invite user button, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Users");
 
-        Button inviteUser = new Button("Invite User", Lucide.MAIL_PLUS.create(), e -> Notifications.show("Invite not yet implemented"));
+        ToolbarButton inviteUser = new ToolbarButton("Invite User", Lucide.MAIL_PLUS.create());
         inviteUser.addThemeVariants(ButtonVariant.PRIMARY);
+        inviteUser.addClickListener(e -> Notifications.show("Invite not yet implemented"));
 
-        Button viewSource = new Button(Lucide.CODE.create(), e -> new SourceViewerDialog(UsersView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
-        viewSource.setAriaLabel("View source");
-        viewSource.setTooltipText("View source");
+        ViewSourceButton viewSource = new ViewSourceButton(UsersView.class, sourceService);
 
         return new ViewHeader(toggle, title, inviteUser, viewSource);
     }
@@ -84,10 +83,17 @@ public class UsersView extends View {
                     return div;
                 }).setComparator(u -> u.name())
                 .setHeader("Name")
+                // Base widths keep name, email and their filters readable on
+                // narrow screens; the grid scrolls sideways instead of
+                // squeezing them, and they still grow to fill wide screens
+                .setWidth("14rem")
+                .setFlexGrow(1)
                 .setResizable(true);
 
         var emailCol = grid.addColumn(SampleData.User::email)
                 .setHeader("Email")
+                .setWidth("16rem")
+                .setFlexGrow(1)
                 .setResizable(true)
                 .setSortable(true);
 
@@ -136,17 +142,21 @@ public class UsersView extends View {
         TextField nameFilter = new TextField();
         nameFilter.setClearButtonVisible(true);
         nameFilter.setPlaceholder("Filter name...");
+        nameFilter.setValueChangeMode(ValueChangeMode.LAZY);
         nameFilter.setWidthFull();
         filterRow.getCell(nameCol).setComponent(nameFilter);
 
         TextField emailFilter = new TextField();
         emailFilter.setClearButtonVisible(true);
         emailFilter.setPlaceholder("Filter email...");
+        emailFilter.setValueChangeMode(ValueChangeMode.LAZY);
         emailFilter.setWidthFull();
         filterRow.getCell(emailCol).setComponent(emailFilter);
 
         Select<String> roleFilter = new Select<>();
-        roleFilter.setItems("", "Admin", "Billing", "Developer", "Viewer");
+        roleFilter.setItems("Admin", "Billing", "Developer", "Viewer");
+        roleFilter.setEmptySelectionAllowed(true);
+        roleFilter.setEmptySelectionCaption("All roles");
         roleFilter.setPlaceholder("All roles");
         roleFilter.setWidthFull();
         filterRow.getCell(roleCol).setComponent(roleFilter);
@@ -157,7 +167,7 @@ public class UsersView extends View {
         Runnable applyFilter = () -> dataView.setFilter(u ->
                 (nameFilter.getValue().isBlank() || u.name().toLowerCase().contains(nameFilter.getValue().toLowerCase())) &&
                         (emailFilter.getValue().isBlank() || u.email().toLowerCase().contains(emailFilter.getValue().toLowerCase())) &&
-                        (roleFilter.getValue() == null || roleFilter.getValue().isBlank() || roleFilter.getValue().equals(u.role())));
+                        (roleFilter.getValue() == null || roleFilter.getValue().equals(u.role())));
 
         nameFilter.addValueChangeListener(e -> applyFilter.run());
         emailFilter.addValueChangeListener(e -> applyFilter.run());
@@ -191,12 +201,12 @@ public class UsersView extends View {
         lastLogin.addClassName("last-login");
 
         Div content = new Div(avatarRow, role, lastLogin);
-        content.addClassName("dialog-content");
+        content.addClassName("content");
 
         Dialog dialog = new Dialog(content);
-        dialog.addClassName("users-view");
+        dialog.addClassName("user-dialog");
         dialog.setHeaderTitle("Edit User");
-        dialog.setWidth("400px");
+        dialog.setWidth("25rem");
 
         Button save = new Button("Save Changes", e -> {
             dialog.close();
@@ -222,13 +232,13 @@ public class UsersView extends View {
         H3 nameSpan = new H3(user.name());
 
         Span emailSpan = new Span(user.email());
-        emailSpan.addClassName("dialog-email");
+        emailSpan.addClassName("email");
 
         Div userInfo = new Div(nameSpan, emailSpan);
-        userInfo.addClassName("dialog-info");
+        userInfo.addClassName("info");
 
         Div avatarRow = new Div(avatar, userInfo);
-        avatarRow.addClassName("dialog-avatar-row");
+        avatarRow.addClassName("avatar-row");
         return avatarRow;
     }
 

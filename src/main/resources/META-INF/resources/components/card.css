@@ -1,0 +1,21 @@
+/* Card theme variants not built into Aura. */
+vaadin-card {
+  &[theme~="no-frame"] {
+    --vaadin-card-background: transparent;
+    --vaadin-card-padding: 0px;
+  }
+
+  /* footer-end relies on vaadin-card's private grid variables (--_header,
+     --_content, --_footer), so recheck it when upgrading Vaadin. */
+  &[theme~="footer-end"] {
+    --_footer: 0;
+    grid-template-rows: repeat(var(--_content), auto) 1fr;
+
+    &::part(footer) {
+      align-self: center;
+      flex-direction: column;
+      grid-column: -1;
+      grid-row: 1 / span calc(var(--_header) + var(--_content));
+    }
+  }
+}

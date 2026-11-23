@@ -464,6 +464,14 @@ public final class SampleData {
     }
 
     public record Order(String id, String customer, String amount, String status, LocalDate date) {
+
+        /**
+         * The amount as a number, for sorting and aggregation. The field itself
+         * keeps the formatted form the sample data is authored in.
+         */
+        public double amountValue() {
+            return Double.parseDouble(amount.replace("$", "").replace(",", ""));
+        }
     }
 
     public record Product(String name, String category, String price, int stock, String status) {

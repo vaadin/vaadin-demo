@@ -1,0 +1,23 @@
+/* Button theme variants not built into Aura. */
+vaadin-button {
+  /* icon-only-on-phone: shows only the icon on phones, to fit in a view
+     header. Give the button an ARIA label and a tooltip, as the hidden text
+     no longer names it; the tooltip only shows while the text is hidden.
+     With a label, Aura pads the end side for the text; equal padding gives
+     it the same square shape as a button that only ever has an icon. */
+  &[theme~="icon-only-on-phone"] {
+    @media (max-width: 767px) {
+      padding-inline: var(--vaadin-padding-s);
+
+      &::part(label) {
+        display: none;
+      }
+    }
+
+    @media (min-width: 768px) {
+      > vaadin-tooltip {
+        display: none;
+      }
+    }
+  }
+}
