@@ -4,15 +4,14 @@ import com.vaadin.demo.service.SourceService;
 import com.vaadin.demo.ui.component.ComponentPreviews;
 import com.vaadin.demo.ui.component.DocsLink;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.AvatarGroup;
 import com.vaadin.flow.component.badge.Badge;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.card.Card;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -69,8 +68,7 @@ public class ComponentsView extends View {
      * Page header with drawer toggle, title, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Components");
 
@@ -87,22 +85,22 @@ public class ComponentsView extends View {
         Div grid = new Div();
         grid.addClassName("card-grid");
         grid.add(
-                card("Button", Button.class, ComponentPreviews.buttons(), "col-span-2"),
+                card("Button", Button.class, ComponentPreviews.buttons(), "wide"),
                 card("Notification", Notification.class, ComponentPreviews.notification()),
-                card("Badge", Badge.class, ComponentPreviews.badges(), "col-span-2", "row-span-2"),
+                card("Badge", Badge.class, ComponentPreviews.badges(), "wide", "tall"),
                 card("Radio Button Group", RadioButtonGroup.class, ComponentPreviews.radioButtonGroup()),
-                card("Side Nav", SideNav.class, ComponentPreviews.sideNav(), "row-span-2"),
+                card("Side Nav", SideNav.class, ComponentPreviews.sideNav(), "tall"),
                 card("Menu Bar", MenuBar.class, ComponentPreviews.menuBar()),
-                card("Tabs", Tabs.class, ComponentPreviews.tabs(), "col-span-2"),
+                card("Tabs", Tabs.class, ComponentPreviews.tabs(), "wide"),
                 card("Confirm Dialog", ConfirmDialog.class, ComponentPreviews.confirmDialog()),
-                card("Date Time Picker", DateTimePicker.class, ComponentPreviews.dateTimePicker(), "col-span-2"),
+                card("Date Time Picker", DateTimePicker.class, ComponentPreviews.dateTimePicker(), "wide"),
                 card("Checkbox Group", CheckboxGroup.class, ComponentPreviews.checkboxGroup()),
                 card("Combo Box", ComboBox.class, ComponentPreviews.comboBox()),
                 createTypographyCard(),
-                card("Grid", Grid.class, ComponentPreviews.grid(), Aura.SURFACE_SOLID, "col-span-3", "row-span-2"),
+                card("Grid", Grid.class, ComponentPreviews.grid(), Aura.SURFACE_SOLID, "extra-wide", "tall"),
                 card("Select", Select.class, ComponentPreviews.select()),
                 card("Avatar Group", AvatarGroup.class, ComponentPreviews.avatarGroup()),
-                card("Message List", MessageList.class, ComponentPreviews.messageList(), "col-span-2", "row-span-2"),
+                card("Message List", MessageList.class, ComponentPreviews.messageList(), "wide", "tall"),
                 card("Text Field", TextField.class, ComponentPreviews.textField()),
                 card("Progress Bar", ProgressBar.class, ComponentPreviews.progressBar()),
                 card("Multi-Select Combo Box", MultiSelectComboBox.class, ComponentPreviews.multiSelectComboBox())

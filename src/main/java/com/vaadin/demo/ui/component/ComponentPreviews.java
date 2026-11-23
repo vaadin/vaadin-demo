@@ -198,7 +198,7 @@ public final class ComponentPreviews {
         Button error = new Button("Error");
         error.addThemeVariants(ButtonVariant.ERROR, ButtonVariant.PRIMARY);
 
-        return preview("buttons-grid", primary, secondary, tertiary, iconButton, error, success);
+        return preview("centered", primary, secondary, tertiary, iconButton, error, success);
     }
 
     /**
@@ -225,14 +225,14 @@ public final class ComponentPreviews {
             notification.add(card);
             notification.open();
         });
-        return preview("card-center", button);
+        return preview("centered", button);
     }
 
     /**
      * Badge variants in both text and icon-only styles, plain and filled.
      */
     public static Component badges() {
-        return preview("badges-row",
+        return preview("centered",
                 createBadges(),
                 createBadges(BadgeVariant.FILLED),
                 createIconBadges(),
@@ -244,7 +244,7 @@ public final class ComponentPreviews {
      */
     private static Div createBadges(BadgeVariant... variants) {
         Div badges = new Div();
-        badges.addClassName("badges-col");
+        badges.addClassName("badges-column");
 
         Badge defaultBadge = new Badge("Default");
         defaultBadge.addThemeVariants(variants);
@@ -265,7 +265,7 @@ public final class ComponentPreviews {
      */
     private static Div createIconBadges(BadgeVariant... variants) {
         Div badges = new Div();
-        badges.addClassName("badges-col");
+        badges.addClassName("badges-column");
 
         Badge defaultBadge = new Badge(Lucide.BELL_RING.create());
         defaultBadge.addThemeVariants(BadgeVariant.ICON_ONLY);
@@ -286,7 +286,7 @@ public final class ComponentPreviews {
         RadioButtonGroup<String> radioButtonGroup = new RadioButtonGroup<>("Options");
         radioButtonGroup.setItems("Option 1", "Option 2", "Option 3");
         radioButtonGroup.setValue("Option 1");
-        return preview("card-center", radioButtonGroup);
+        return preview("centered", radioButtonGroup);
     }
 
     /**
@@ -314,7 +314,7 @@ public final class ComponentPreviews {
 
         nav.addItem(createSideNavItem("Support", Lucide.MESSAGES_SQUARE));
 
-        return preview("card-center", nav);
+        return preview("centered", nav);
     }
 
     private static SideNavItem createSideNavItem(String label, Lucide icon) {
@@ -358,7 +358,7 @@ public final class ComponentPreviews {
         actions.getSubMenu().addSeparator();
         actions.getSubMenu().addItem("Delete").addClassName(Aura.ACCENT_RED);
 
-        return preview("card-center", menuBar);
+        return preview("centered", menuBar);
     }
 
     /**
@@ -372,7 +372,7 @@ public final class ComponentPreviews {
         Tab preferences = new Tab("Preferences");
         Tab settings = new Tab("Settings");
 
-        return preview("card-center", new Tabs(details, preferences, settings));
+        return preview("centered", new Tabs(details, preferences, settings));
     }
 
     /**
@@ -389,15 +389,15 @@ public final class ComponentPreviews {
             dialog.setConfirmText("Save");
             dialog.open();
         });
-        return preview("card-center", button);
+        return preview("centered", button);
     }
 
     public static Component dateTimePicker() {
         DateTimePicker dateTimePicker = new DateTimePicker();
         dateTimePicker.setValue(LocalDateTime.now());
         dateTimePicker.setWidthFull();
-        dateTimePicker.setMaxWidth("20em");
-        return preview("card-center", dateTimePicker);
+        dateTimePicker.setMaxWidth("17.5rem");
+        return preview("centered", dateTimePicker);
     }
 
     /**
@@ -407,14 +407,14 @@ public final class ComponentPreviews {
         ComboBox<String> comboBox = new ComboBox<>("Country");
         comboBox.setItems(COUNTRIES);
         comboBox.setValue("Finland");
-        return preview("card-center", comboBox);
+        return preview("centered", comboBox);
     }
 
     public static Component checkboxGroup() {
         CheckboxGroup<String> checkboxGroup = new CheckboxGroup<>("Options");
         checkboxGroup.setItems("Option 1", "Option 2", "Option 3");
         checkboxGroup.setValue(Collections.singleton("Option 1"));
-        return preview("card-center", checkboxGroup);
+        return preview("centered", checkboxGroup);
     }
 
     /**
@@ -442,14 +442,14 @@ public final class ComponentPreviews {
             return badge;
         }).setHeader("Status");
 
-        return preview("grid-preview", grid);
+        return preview("grid", grid);
     }
 
     public static Component select() {
         Select<String> select = new Select<>("Options");
         select.setItems("Option 1", "Option 2", "Option 3");
         select.setValue("Option 1");
-        return preview("card-center", select);
+        return preview("centered", select);
     }
 
     public static Component avatarGroup() {
@@ -468,8 +468,8 @@ public final class ComponentPreviews {
         // A fixed count lets the group shrink to its avatars so it can be
         // centered, instead of filling the width and aligning them left
         avatarGroup.setMaxItemsVisible(6);
-        avatarGroup.addClassName("fit-content");
-        return preview("card-center", avatarGroup);
+        avatarGroup.addClassName("content-width");
+        return preview("centered", avatarGroup);
     }
 
     /**
@@ -488,15 +488,15 @@ public final class ComponentPreviews {
                 "Lindsey Listy");
         lindsey.setUserColorIndex(2);
 
-        return preview("message-list-card-content", new MessageList(matt, lindsey), new MessageInput());
+        return preview("message-list", new MessageList(matt, lindsey), new MessageInput());
     }
 
     public static Component messageInput() {
-        return preview("card-center", new MessageInput());
+        return preview("centered", new MessageInput());
     }
 
     public static Component progressBar() {
-        return preview("card-center", new ProgressBar(0, 100, 50));
+        return preview("centered", new ProgressBar(0, 100, 50));
     }
 
     /**
@@ -507,7 +507,7 @@ public final class ComponentPreviews {
         comboBox.setItems(COUNTRIES);
         comboBox.setValue(Set.of("Finland", "Sweden"));
         comboBox.setWidthFull();
-        return preview("card-center", comboBox);
+        return preview("centered", comboBox);
     }
 
     /**
@@ -518,7 +518,7 @@ public final class ComponentPreviews {
         textField.setClearButtonVisible(true);
         textField.setPrefixComponent(Lucide.FOLDER.create());
         textField.setValue("Projects");
-        return preview("card-center", textField);
+        return preview("centered", textField);
     }
 
     /**
@@ -528,7 +528,7 @@ public final class ComponentPreviews {
     public static Component appLayout() {
         Span hint = new Span("You're looking at it: the drawer, navigation and page area around this dialog are an App Layout.");
         hint.addClassName("preview-hint");
-        return preview("card-center", hint);
+        return preview("centered", hint);
     }
 
     public static Component card() {
@@ -537,7 +537,7 @@ public final class ComponentPreviews {
         card.setSubtitle(new Span("The Exotic North"));
         card.add(new Text("The northern-most region of Finland and an active outdoor destination."));
         card.setMaxWidth("18rem");
-        return preview("card-center", card);
+        return preview("centered", card);
     }
 
     /**
@@ -552,7 +552,7 @@ public final class ComponentPreviews {
         menu.addItem("Edit");
         menu.addItem("Duplicate");
         menu.addItem("Share");
-        return preview("card-center", target);
+        return preview("centered", target);
     }
 
     /**
@@ -570,13 +570,13 @@ public final class ComponentPreviews {
             dialog.getFooter().add(cancel, create);
             dialog.open();
         });
-        return preview("card-center", button);
+        return preview("centered", button);
     }
 
     public static Component emailField() {
         EmailField email = new EmailField("Email");
         email.setValue("alice@example.com");
-        return preview("card-center", email);
+        return preview("centered", email);
     }
 
     /**
@@ -588,20 +588,20 @@ public final class ComponentPreviews {
                 new TextField("Last name"),
                 new EmailField("Email"));
         form.setAutoResponsive(true);
-        return preview("block", form);
+        return preview(form);
     }
 
     public static Component horizontalLayout() {
         HorizontalLayout layout = new HorizontalLayout(layoutBox("1"), layoutBox("2"), layoutBox("3"));
         layout.setWrap(true);
-        return preview("card-center", layout);
+        return preview("centered", layout);
     }
 
     public static Component verticalLayout() {
         VerticalLayout layout = new VerticalLayout(layoutBox("1"), layoutBox("2"), layoutBox("3"));
         layout.setPadding(false);
         layout.setWidth(null);
-        return preview("card-center", layout);
+        return preview("centered", layout);
     }
 
     /**
@@ -627,18 +627,18 @@ public final class ComponentPreviews {
         scroller.addThemeVariants(ScrollerVariant.OVERFLOW_INDICATORS);
         scroller.setHeight("8rem");
         scroller.setWidthFull();
-        return preview("block", scroller);
+        return preview(scroller);
     }
 
     public static Component icons() {
-        return preview("card-center",
+        return preview("centered",
                 VaadinIcon.HOME.create(), VaadinIcon.USER.create(), VaadinIcon.COG.create(),
                 VaadinIcon.BELL.create(), VaadinIcon.SEARCH.create(), VaadinIcon.STAR.create(),
                 Lucide.HOUSE.create(), Lucide.USERS.create(), Lucide.SETTINGS.create());
     }
 
     public static Component markdown() {
-        return preview("block", new Markdown("""
+        return preview(new Markdown("""
                 **Markdown** renders *formatted* text from a string:
 
                 - Lists and `inline code`
@@ -650,27 +650,36 @@ public final class ComponentPreviews {
         NumberField quantity = new NumberField("Quantity");
         quantity.setValue(3d);
         quantity.setStepButtonsVisible(true);
-        return preview("card-center", quantity);
+        return preview("centered", quantity);
     }
 
     public static Component passwordField() {
         PasswordField password = new PasswordField("Password");
         password.setValue("secret123");
-        return preview("card-center", password);
+        return preview("centered", password);
     }
 
     public static Component tooltip() {
         Button button = new Button("Hover or Focus Me");
         button.setTooltipText("Tooltips give short extra information");
-        return preview("card-center", button);
+        return preview("centered", button);
     }
 
     /**
      * Wraps preview content in a container laid out by component-previews.css.
      */
     private static Div preview(String layoutClass, Component... content) {
+        Div div = preview(content);
+        div.addClassName(layoutClass);
+        return div;
+    }
+
+    /**
+     * Wraps preview content that lays itself out, such as a full-width form.
+     */
+    private static Div preview(Component... content) {
         Div div = new Div(content);
-        div.addClassNames("component-preview", layoutClass);
+        div.addClassName("component-preview");
         return div;
     }
 

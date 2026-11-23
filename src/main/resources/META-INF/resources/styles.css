@@ -1,23 +1,28 @@
-@import "./avatar.css";
-@import "./aura-view.css";
-@import "./card.css";
-@import "./prism.css";
-@import "./main-layout.css";
-@import "./source-viewer-dialog.css";
-@import "./dashboard-view.css";
-@import "./users-view.css";
-@import "./products-view.css";
-@import "./settings-view.css";
-@import "./components-view.css";
-@import "./component-previews.css";
+/* Entry stylesheet (Application.java).
+   components/  one file per component, named after it (button.css styles
+                vaadin-button): theme variants and classed instances
+   views/       Aura's view structure and one file per view, scoped by the
+                view's root class
+   misc/        everything else, e.g. the code highlighting (prism.css)
 
-/* Buttons that show only their icon on phones, to fit in a view header.
-   Give them an ARIA label, as the hidden text no longer names them. */
-@media (max-width: 767px) {
-  .icon-only-on-phone::part(label) {
-    display: none;
-  }
-}
+   Every class selector names its element, e.g. vaadin-card.orders-card. */
+
+@import "./components/anchor.css";
+@import "./components/avatar.css";
+@import "./components/button.css";
+@import "./components/card.css";
+@import "./components/dialog.css";
+@import "./components/icon.css";
+
+@import "./views/aura-view.css";
+@import "./views/components-view.css";
+@import "./views/dashboard-view.css";
+@import "./views/products-view.css";
+@import "./views/settings-view.css";
+@import "./views/users-view.css";
+
+@import "./misc/component-previews.css";
+@import "./misc/prism.css";
 
 hr {
   background: var(--vaadin-border-color-secondary);

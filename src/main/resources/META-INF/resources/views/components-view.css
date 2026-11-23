@@ -1,0 +1,71 @@
+/* Components view (ComponentsView.java). */
+/* Preview layouts live in misc/component-previews.css. */
+main.components-view {
+  div.card-grid {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--vaadin-gap-s);
+    grid-auto-flow: dense;
+    grid-auto-rows: minmax(12.5rem, auto);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    padding-bottom: var(--vaadin-padding-l);
+    padding-inline: var(--vaadin-padding-xs);
+
+    /* Wide cards span extra columns only when the grid actually has them;
+       spanning more columns than fit would push the page wider than the
+       screen on phones. The grid is a size container, so the queries
+       measure the grid itself and the drawer's width is accounted for.
+       16rem columns: two fit from 33rem, three from 49rem. */
+    > vaadin-card.wide,
+    > vaadin-card.extra-wide {
+      @container (min-width: 33rem) {
+        grid-column: span 2;
+      }
+    }
+
+    > vaadin-card.extra-wide {
+      @container (min-width: 49rem) {
+        grid-column: span 3;
+      }
+    }
+
+    > vaadin-card.tall {
+      grid-row: span 2;
+    }
+  }
+
+  /* The type scale sample: one class per Aura font size token. */
+  div.typography-card {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-weight: var(--aura-font-weight-semibold);
+    height: 100%;
+    justify-content: center;
+
+    > div.text-xs {
+      font-size: var(--aura-font-size-xs);
+      line-height: var(--aura-line-height-xs);
+    }
+
+    > div.text-s {
+      font-size: var(--aura-font-size-s);
+      line-height: var(--aura-line-height-s);
+    }
+
+    > div.text-m {
+      font-size: var(--aura-font-size-m);
+      line-height: var(--aura-line-height-m);
+    }
+
+    > div.text-l {
+      font-size: var(--aura-font-size-l);
+      line-height: var(--aura-line-height-l);
+    }
+
+    > div.text-xl {
+      font-size: var(--aura-font-size-xl);
+      line-height: var(--aura-line-height-xl);
+    }
+  }
+}

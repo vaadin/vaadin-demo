@@ -2,14 +2,15 @@ package com.vaadin.demo.ui.view;
 
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
+import com.vaadin.demo.ui.component.ToolbarButton;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.avatar.AvatarVariant;
 import com.vaadin.flow.component.badge.Badge;
@@ -51,15 +52,13 @@ public class UsersView extends View {
      * Page header with drawer toggle, title, invite user button, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Users");
 
-        Button inviteUser = new Button("Invite User", Lucide.MAIL_PLUS.create(), e -> Notifications.show("Invite not yet implemented"));
+        ToolbarButton inviteUser = new ToolbarButton("Invite User", Lucide.MAIL_PLUS.create());
         inviteUser.addThemeVariants(ButtonVariant.PRIMARY);
-        inviteUser.addClassName("icon-only-on-phone");
-        inviteUser.setAriaLabel("Invite User");
+        inviteUser.addClickListener(e -> Notifications.show("Invite not yet implemented"));
 
         ViewSourceButton viewSource = new ViewSourceButton(UsersView.class, sourceService);
 
@@ -202,12 +201,12 @@ public class UsersView extends View {
         lastLogin.addClassName("last-login");
 
         Div content = new Div(avatarRow, role, lastLogin);
-        content.addClassName("dialog-content");
+        content.addClassName("content");
 
         Dialog dialog = new Dialog(content);
-        dialog.addClassName("users-view");
+        dialog.addClassName("user-dialog");
         dialog.setHeaderTitle("Edit User");
-        dialog.setWidth("400px");
+        dialog.setWidth("25rem");
 
         Button save = new Button("Save Changes", e -> {
             dialog.close();
@@ -233,13 +232,13 @@ public class UsersView extends View {
         H3 nameSpan = new H3(user.name());
 
         Span emailSpan = new Span(user.email());
-        emailSpan.addClassName("dialog-email");
+        emailSpan.addClassName("email");
 
         Div userInfo = new Div(nameSpan, emailSpan);
-        userInfo.addClassName("dialog-info");
+        userInfo.addClassName("info");
 
         Div avatarRow = new Div(avatar, userInfo);
-        avatarRow.addClassName("dialog-avatar-row");
+        avatarRow.addClassName("avatar-row");
         return avatarRow;
     }
 

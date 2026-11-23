@@ -1,3 +1,4 @@
+/* Code highlighting in the source viewer (prism.js theme). */
 pre[class*='language-'] {
     background: var(--vaadin-background-container);
     border-radius: var(--vaadin-radius-m);

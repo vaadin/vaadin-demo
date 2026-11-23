@@ -26,7 +26,7 @@ public class SourceViewerDialog extends Dialog {
         setHeaderTitle(viewClass.getSimpleName() + ".java");
         setHeight("80vh");
         setMaxWidth("90vw");
-        setWidth("900px");
+        setWidth("56.25rem");
 
         String source = sourceService.getSource(viewClass);
         String githubUrl = sourceService.getGitHubUrl(viewClass);

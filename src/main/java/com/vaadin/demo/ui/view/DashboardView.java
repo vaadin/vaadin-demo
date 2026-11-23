@@ -5,14 +5,15 @@ import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.data.SampleData.Order;
 import com.vaadin.demo.service.SourceService;
 import com.vaadin.demo.ui.component.StatusBadge;
+import com.vaadin.demo.ui.component.ToolbarButton;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.badge.Badge;
 import com.vaadin.flow.component.badge.BadgeVariant;
@@ -60,8 +61,9 @@ import java.util.Set;
  * Dashboard showing key figures derived from the order data, a status breakdown,
  * and a feature-rich orders grid.
  * <p>
- * Layout is composed from Vaadin layout components; dashboard-view.css only
- * sizes and orders the main areas per screen size.
+ * Layout is composed from Vaadin layout components. dashboard-view.css sizes
+ * and orders the main areas per screen size and sets the spacing between and
+ * within the cards, so it is defined in one place.
  */
 @Route("")
 @RouteAlias("dashboard")
@@ -69,19 +71,14 @@ import java.util.Set;
 public class DashboardView extends View {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d, yyyy");
-    private static final String ROW_GAP = "var(--vaadin-gap-m)";
-    private static final String LABEL_GAP = "var(--vaadin-gap-s)";
-    private static final String BREAKDOWN_ROW_GAP = "var(--vaadin-gap-l)";
-    private static final String BREAKDOWN_LABEL_GAP = "var(--vaadin-gap-xs)";
     private static final List<String> STATUSES = List.of("Completed", "Processing", "Pending", "Failed");
 
     private final List<Order> orders = SampleData.orders();
     private final OrderMetrics metrics = new OrderMetrics(orders);
 
-    private final Badge selectionBadge = new Badge();
-    private final Button bulkArchive = new Button("Archive");
-    private final Button clearSelection = new Button("Clear Selection");
-    private final HorizontalLayout selectionBar = new HorizontalLayout(selectionBadge, bulkArchive, clearSelection);
+    private final Button clearSelection = new Button(Lucide.X.create());
+    private final Span selectionCount = new Span();
+    private final HorizontalLayout selectionBar = new HorizontalLayout(clearSelection, selectionCount);
     private final Div toolbar = new Div();
     private final TextField customerFilter = new TextField();
     private final Map<String, Grid.Column<Order>> toggleableColumns = new LinkedHashMap<>();
@@ -100,8 +97,7 @@ public class DashboardView extends View {
      * Page header with drawer toggle, title, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Dashboard");
 
@@ -130,7 +126,6 @@ public class DashboardView extends View {
     private Scroller createSideColumn() {
         HorizontalLayout cards = new HorizontalLayout(createStatusBreakdownCard(), createFiguresGrid());
         cards.setPadding(false);
-        cards.setWidthFull();
         cards.addClassName("dashboard-side-content");
 
         Scroller scroller = new Scroller(cards);
@@ -144,14 +139,11 @@ public class DashboardView extends View {
      */
     private HorizontalLayout createFiguresGrid() {
         HorizontalLayout figures = new HorizontalLayout();
-        figures.setSpacing(ROW_GAP);
         figures.setPadding(false);
-        figures.addClassName("status-cards");
+        figures.addClassName("stat-cards");
 
         metrics.metrics().forEach(metric -> {
-            Card card = createStatCard(metric);
-            card.setWidthFull();
-            figures.add(card);
+            figures.add(createStatCard(metric));
         });
         return figures;
     }
@@ -175,7 +167,7 @@ public class DashboardView extends View {
         figure.setPadding(false);
         // On narrow cards the trend badge drops below the value instead of overflowing
         figure.setWrap(true);
-        figure.setSpacing("0.5rem");
+        figure.addClassName("stat-figure");
 
         Card card = new Card();
         card.addClassName("stat-card");
@@ -190,7 +182,7 @@ public class DashboardView extends View {
     private Card createStatusBreakdownCard() {
         VerticalLayout rows = new VerticalLayout();
         rows.setPadding(false);
-        rows.setSpacing(BREAKDOWN_ROW_GAP);
+        rows.addClassName("status-rows");
 
         metrics.statusBreakdown().forEach(share -> {
             HorizontalLayout labels = new HorizontalLayout(
@@ -208,7 +200,7 @@ public class DashboardView extends View {
 
             VerticalLayout row = new VerticalLayout(labels, bar);
             row.setPadding(false);
-            row.setSpacing(BREAKDOWN_LABEL_GAP);
+            row.addClassName("status-row");
             rows.add(row);
         });
 
@@ -292,23 +284,37 @@ public class DashboardView extends View {
     }
 
     /**
-     * Selection count and bulk actions, shown in place of the filters while
-     * rows are selected.
+     * Clear-selection button, selection count and bulk actions, shown in
+     * place of the filters while rows are selected. The actions are only
+     * shown as icons on phones.
      */
     private HorizontalLayout createSelectionBar() {
-        bulkArchive.setIcon(Lucide.ARCHIVE.create());
-        bulkArchive.addThemeVariants(ButtonVariant.TERTIARY);
-        bulkArchive.addClickListener(e -> archiveSelection());
-
-        clearSelection.setIcon(Lucide.X.create());
         clearSelection.addThemeVariants(ButtonVariant.TERTIARY);
+        clearSelection.setAriaLabel("Clear Selection");
+        clearSelection.setTooltipText("Clear Selection");
         clearSelection.addClickListener(e -> clearSelection());
 
+        // At the far end, so a changing count never moves them
+        selectionBar.addToEnd(
+                createBulkAction("Mark as Completed", Lucide.CIRCLE_CHECK, "marked as completed"),
+                createBulkAction("Export", Lucide.DOWNLOAD, "exported"),
+                createBulkAction("Archive", Lucide.ARCHIVE, "archived"));
         selectionBar.setAlignItems(Alignment.CENTER);
         selectionBar.setPadding(false);
         selectionBar.setWrap(true);
         selectionBar.addClassName("selection-bar");
         return selectionBar;
+    }
+
+    /**
+     * Button applying an action to all selected rows. The demo only reports
+     * the outcome, such as "3 orders archived".
+     */
+    private ToolbarButton createBulkAction(String text, Lucide icon, String outcome) {
+        ToolbarButton button = new ToolbarButton(text, icon.create());
+        button.addThemeVariants(ButtonVariant.TERTIARY);
+        button.addClickListener(e -> applyToSelection(outcome));
+        return button;
     }
 
     /**
@@ -446,7 +452,7 @@ public class DashboardView extends View {
                 new Span("Status: " + order.status()),
                 new Span("Ordered: " + order.date().format(DATE_FORMAT)));
         details.setPadding(false);
-        details.setSpacing(LABEL_GAP);
+        details.addClassName("order-details");
         return details;
     }
 
@@ -460,7 +466,7 @@ public class DashboardView extends View {
 
     private void updateSelection(Set<Order> selection) {
         toolbar.setClassName("selecting", !selection.isEmpty());
-        selectionBadge.setText(selection.size() + " selected");
+        selectionCount.setText(selection.size() + " selected");
     }
 
     /**
@@ -473,10 +479,10 @@ public class DashboardView extends View {
         customerFilter.focus();
     }
 
-    private void archiveSelection() {
+    private void applyToSelection(String outcome) {
         int count = grid.getSelectedItems().size();
         clearSelection();
-        Notifications.show(count + " orders archived", NotificationVariant.SUCCESS);
+        Notifications.show(count + (count == 1 ? " order " : " orders ") + outcome, NotificationVariant.SUCCESS);
     }
 
     private void updateFooter() {

@@ -2,13 +2,14 @@ package com.vaadin.demo.ui.view;
 
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
+import com.vaadin.demo.ui.component.ToolbarButton;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.badge.Badge;
 import com.vaadin.flow.component.badge.BadgeVariant;
 import com.vaadin.flow.component.button.Button;
@@ -47,15 +48,12 @@ public class ProductsView extends View {
      * Page header with drawer toggle, title, add product button, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Products");
 
-        Button addProduct = new Button("Add Product", Lucide.PLUS.create());
+        ToolbarButton addProduct = new ToolbarButton("Add Product", Lucide.PLUS.create());
         addProduct.addThemeVariants(ButtonVariant.PRIMARY);
-        addProduct.addClassName("icon-only-on-phone");
-        addProduct.setAriaLabel("Add Product");
         addProduct.addClickListener(e -> openProductDialog(null));
 
         ViewSourceButton viewSource = new ViewSourceButton(ProductsView.class, sourceService);
@@ -72,9 +70,9 @@ public class ProductsView extends View {
         grid.setSelectionMode(SelectionMode.NONE);
 
         var nameCol = grid.addColumn(SampleData.Product::name)
-                .setHeader("Name").setWidth("200px").setFlexGrow(2).setResizable(true).setSortable(true);
+                .setHeader("Name").setWidth("12.5rem").setFlexGrow(2).setResizable(true).setSortable(true);
         var categoryCol = grid.addColumn(SampleData.Product::category)
-                .setHeader("Category").setWidth("140px").setFlexGrow(1).setSortable(true);
+                .setHeader("Category").setWidth("8.75rem").setFlexGrow(1).setSortable(true);
         var priceCol = grid.addColumn(SampleData.Product::price)
                 .setHeader("Price").setAutoWidth(true).setFlexGrow(0).setSortable(true);
         var stockCol = grid.addColumn(SampleData.Product::stock)
@@ -168,7 +166,7 @@ public class ProductsView extends View {
 
         Dialog dialog = new Dialog(form);
         dialog.setHeaderTitle(product == null ? "Add Product" : "Edit Product");
-        dialog.setWidth("400px");
+        dialog.setWidth("25rem");
 
         Button save = new Button("Save", e -> {
             dialog.close();

@@ -1,0 +1,163 @@
+/* Dashboard view (DashboardView.java). */
+/* Phones: the status breakdown above the orders grid.
+   Tablets: the breakdown and the key figures side by side, above the grid.
+   Desktops: the grid, with the breakdown and the figures stacked beside it. */
+main.dashboard-view {
+  --orders-card-min-height: 28rem;
+  --vaadin-badge-padding: var(--vaadin-padding-s);
+  /* Between the main areas and between the cards beside the grid. */
+  --dashboard-gap: var(--vaadin-gap-l);
+
+  > div.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dashboard-gap);
+    overflow: auto;
+    padding-bottom: var(--vaadin-padding-l);
+    padding-inline: var(--vaadin-padding-l);
+
+    @media (min-width: 768px) and (max-width: 1439px) {
+      display: grid;
+      grid-template-rows: max-content minmax(var(--orders-card-min-height), 1fr);
+    }
+
+    @media (min-width: 1440px) {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      grid-template-rows: 1fr;
+    }
+  }
+
+  /* Orders grid */
+
+  vaadin-card.orders-card {
+    flex: none;
+    min-height: var(--orders-card-min-height);
+    order: 2;
+
+    @media (min-width: 1440px) {
+      order: 1;
+    }
+
+    /* The filters and the selection bar share one cell, so the toolbar keeps
+       the height of the taller one and the grid stays put when they swap. */
+    div.orders-toolbar {
+      align-self: stretch;
+      display: grid;
+
+      > * {
+        grid-area: 1 / 1;
+      }
+
+      &.selecting > vaadin-horizontal-layout.orders-filters,
+      &:not(.selecting) > vaadin-horizontal-layout.selection-bar {
+        visibility: hidden;
+      }
+    }
+
+    /* Before the filters rule: on phones, its full-width override wins. */
+    vaadin-text-field.customer-filter {
+      width: 20rem;
+    }
+
+    vaadin-horizontal-layout.orders-filters {
+      @media (max-width: 767px) {
+        align-items: stretch;
+        flex-direction: column;
+
+        > * {
+          width: 100%;
+        }
+      }
+    }
+
+    vaadin-horizontal-layout.customer-cell > vaadin-avatar {
+      flex: none;
+    }
+
+    span.customer-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    vaadin-vertical-layout.order-details {
+      gap: var(--vaadin-gap-s);
+    }
+  }
+
+  /* Cards beside the grid */
+
+  vaadin-scroller.dashboard-side {
+    flex: none;
+    order: 1;
+    overflow: visible;
+
+    @media (min-width: 1440px) {
+      order: 2;
+    }
+
+    > vaadin-horizontal-layout.dashboard-side-content {
+      flex-direction: column;
+      gap: var(--dashboard-gap);
+      width: 100%;
+
+      @media (min-width: 768px) and (max-width: 1439px) {
+        flex-direction: row;
+      }
+
+      > vaadin-card.status-breakdown,
+      > vaadin-horizontal-layout.stat-cards {
+        min-width: 0;
+        width: 100%;
+
+        @media (min-width: 768px) and (max-width: 1439px) {
+          flex: 1 1 0;
+        }
+      }
+    }
+  }
+
+  vaadin-card.status-breakdown {
+    --vaadin-card-gap: var(--vaadin-gap-xl);
+
+    vaadin-vertical-layout.status-rows {
+      gap: var(--vaadin-gap-xl);
+    }
+
+    vaadin-vertical-layout.status-row {
+      gap: var(--vaadin-gap-m);
+    }
+  }
+
+  /* The key figures. Hidden on phones. */
+  vaadin-horizontal-layout.stat-cards {
+    align-content: start;
+    display: grid;
+    gap: var(--dashboard-gap);
+    grid-template-columns: minmax(0, 1fr);
+
+    @media (max-width: 767px) {
+      display: none;
+    }
+
+    > vaadin-card.stat-card {
+      --vaadin-card-title-color: var(--vaadin-text-color-secondary);
+      --vaadin-card-title-font-size: var(--aura-font-size-m);
+      --vaadin-card-title-font-weight: var(--aura-font-weight-regular);
+      --vaadin-card-title-line-height: var(--aura-line-height-m);
+      min-width: 0;
+    }
+
+    vaadin-horizontal-layout.stat-figure {
+      gap: var(--vaadin-gap-s);
+    }
+
+    span.stat-value {
+      font-size: round(var(--aura-font-size-xl) * 1.25, 0.0625rem);
+      font-variant-numeric: tabular-nums;
+      font-weight: var(--aura-font-weight-semibold);
+    }
+  }
+}

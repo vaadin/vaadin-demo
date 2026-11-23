@@ -1,0 +1,67 @@
+/* Live component examples (ComponentPreviews.java). */
+/* Shown in the Components view and in the source viewer's "Components used
+   here" tab. Each preview is a div.component-preview plus, optionally, one
+   layout class. */
+div.component-preview {
+  /* Span the card so the centering below works wherever the card is. */
+  box-sizing: border-box;
+  width: 100%;
+
+  /* Never let an example overflow its stage in a narrow card. */
+  > * {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Layouts */
+
+  &.centered {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vaadin-gap-s);
+    height: 100%;
+    justify-content: center;
+  }
+
+  &.grid {
+    height: 100%;
+  }
+
+  &.message-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vaadin-gap-m);
+    height: 100%;
+    justify-content: center;
+  }
+
+  /* Parts of individual previews */
+
+  /* Shrinks a full-width component to its content so it can be centered. */
+  vaadin-avatar-group.content-width {
+    width: fit-content;
+  }
+
+  div.badges-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vaadin-gap-s);
+  }
+
+  /* Numbered blocks in the Horizontal / Vertical Layout previews. */
+  div.layout-box {
+    background: var(--vaadin-background-container-strong);
+    border-radius: var(--vaadin-radius-s);
+    padding: var(--vaadin-padding-s) var(--vaadin-padding-m);
+  }
+
+  span.preview-hint {
+    color: var(--vaadin-text-color-secondary);
+    font-size: var(--aura-font-size-s);
+    line-height: var(--aura-line-height-s);
+    max-width: 28rem;
+    text-align: center;
+  }
+}

@@ -3,10 +3,10 @@ package com.vaadin.demo.ui.view;
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
 import com.vaadin.demo.ui.component.View;
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Notifications;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.card.Card;
@@ -42,8 +42,7 @@ public class SettingsView extends View {
      * Page header with drawer toggle, title, and source viewer button.
      */
     private ViewHeader createHeader(SourceService sourceService) {
-        DrawerToggle toggle = new DrawerToggle();
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
 
         H1 title = new H1("Settings");
 
@@ -71,7 +70,7 @@ public class SettingsView extends View {
         integrations.setVisible(false);
 
         Tabs tabs = new Tabs(generalTab, notificationsTab, securityTab, integrationsTab);
-        tabs.addClassName("tabs");
+        tabs.addClassName("settings-tabs");
         tabs.addSelectedChangeListener(e -> {
             general.setVisible(e.getSelectedTab() == generalTab);
             notifications.setVisible(e.getSelectedTab() == notificationsTab);
@@ -163,11 +162,9 @@ public class SettingsView extends View {
         form.setExpandFields(true);
 
         Button changePassword = new Button("Change Password", e -> Notifications.show("Password change is not implemented in this demo"));
-        changePassword.addClassName("section-button");
         changePassword.addThemeVariants(ButtonVariant.PRIMARY);
 
         Hr hr = new Hr();
-        hr.addClassName("section-divider");
 
         H2 twoFactorHeading = new H2("Two-Factor Authentication");
         twoFactorHeading.addClassName("two-factor-heading");
@@ -176,10 +173,12 @@ public class SettingsView extends View {
         twoFactorDescription.addClassName("two-factor-description");
 
         Button enableTwoFactor = new Button("Enable 2FA", e -> Notifications.show("2FA setup is not implemented in this demo"));
-        enableTwoFactor.addClassName("section-button");
 
-        Div layout = new Div(form, changePassword, hr, twoFactorHeading, twoFactorDescription, enableTwoFactor);
-        layout.addClassName("security-panel");
+        Div twoFactorText = new Div(twoFactorHeading, twoFactorDescription);
+        twoFactorText.addClassName("section-heading");
+
+        Div layout = new Div(form, changePassword, hr, twoFactorText, enableTwoFactor);
+        layout.addClassName("panel");
         return layout;
     }
 

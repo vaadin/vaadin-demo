@@ -1,0 +1,8 @@
+/* "Docs ↗" link in a card header (DocsLink.java). */
+a.docs-link {
+  --vaadin-icon-size: 1em;
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--aura-font-size-s);
+  gap: var(--vaadin-gap-xs);
+}

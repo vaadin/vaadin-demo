@@ -1,5 +1,6 @@
 package com.vaadin.demo.ui;
 
+import com.vaadin.demo.ui.component.ViewDrawerToggle;
 import com.vaadin.demo.ui.component.ViewFooter;
 import com.vaadin.demo.ui.component.ViewHeader;
 import com.vaadin.demo.ui.component.ViewHeading;
@@ -9,10 +10,8 @@ import com.vaadin.demo.ui.view.*;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.avatar.AvatarVariant;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.Hr;
@@ -36,7 +35,6 @@ import java.util.Map;
 public class MainLayout extends AppLayout {
 
     public MainLayout() {
-        addClassName("main-layout");
         setPrimarySection(Section.DRAWER);
         initDrawer();
     }
@@ -53,9 +51,8 @@ public class MainLayout extends AppLayout {
 
         ViewHeading appName = new ViewHeading("Vaadin Demo");
 
-        DrawerToggle toggle = new DrawerToggle();
+        ViewDrawerToggle toggle = new ViewDrawerToggle();
         toggle.addThemeNames(Theme.DRAWER_TOGGLE_PERMANENT);
-        toggle.addThemeVariants(ButtonVariant.TERTIARY);
 
         return new ViewHeader(appLogo, appName, toggle);
     }
@@ -149,7 +146,7 @@ public class MainLayout extends AppLayout {
 
     private MenuItem createMenuItem(SubMenu subMenu, String label, Lucide icon, boolean checkable) {
         SvgIcon svgIcon = icon.create();
-        svgIcon.addClassNames("main-layout", "menu-item-icon");
+        svgIcon.addClassName("menu-item-icon");
 
         MenuItem item = subMenu.addItem(label);
         item.addComponentAsFirst(svgIcon);

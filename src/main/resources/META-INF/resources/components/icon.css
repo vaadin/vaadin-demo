@@ -1,0 +1,5 @@
+/* Icons in the user menu (MainLayout.java). */
+/* Not nested in the layout: the menu renders outside it. */
+vaadin-icon.menu-item-icon {
+  color: var(--vaadin-text-color-secondary);
+}
