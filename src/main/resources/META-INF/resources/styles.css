@@ -11,18 +11,11 @@
 @import "./components-view.css";
 @import "./component-previews.css";
 
+/* Only the icon shows on phones, so view actions keep room in the header
+   (ViewSourceButton.java). */
 @media (max-width: 767px) {
-  .floating-action {
-    bottom: 10px;
-    box-shadow: var(--vaadin-shadow-m);
-    left: 50%;
-    position: fixed;
-    transform: translateX(-50%);
-    z-index: 1;
-  }
-
-  .aura-view:has(.floating-action) {
-    padding-bottom: calc(var(--safe-area-inset-bottom) + 3.5rem);
+  .view-source-button::part(label) {
+    display: none;
   }
 }
 

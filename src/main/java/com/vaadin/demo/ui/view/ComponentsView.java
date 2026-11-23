@@ -3,11 +3,10 @@ package com.vaadin.demo.ui.view;
 import com.vaadin.demo.service.SourceService;
 import com.vaadin.demo.ui.component.ComponentPreviews;
 import com.vaadin.demo.ui.component.DocsLink;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
 import com.vaadin.demo.ui.component.View;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
-import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.AvatarGroup;
@@ -75,8 +74,7 @@ public class ComponentsView extends View {
 
         H1 title = new H1("Components");
 
-        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(ComponentsView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewSourceButton viewSource = new ViewSourceButton(ComponentsView.class, sourceService);
 
         return new ViewHeader(toggle, title, viewSource);
     }

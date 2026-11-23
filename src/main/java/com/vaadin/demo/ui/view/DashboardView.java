@@ -4,10 +4,10 @@ import com.vaadin.demo.data.OrderMetrics;
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.data.SampleData.Order;
 import com.vaadin.demo.service.SourceService;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
 import com.vaadin.demo.ui.component.StatusBadge;
 import com.vaadin.demo.ui.component.View;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
@@ -105,8 +105,7 @@ public class DashboardView extends View {
 
         H1 title = new H1("Dashboard");
 
-        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(DashboardView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewSourceButton viewSource = new ViewSourceButton(DashboardView.class, sourceService);
 
         return new ViewHeader(toggle, title, viewSource);
     }

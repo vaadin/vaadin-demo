@@ -2,9 +2,9 @@ package com.vaadin.demo.ui.view;
 
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
 import com.vaadin.demo.ui.component.View;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
@@ -54,11 +54,9 @@ public class ProductsView extends View {
 
         Button addProduct = new Button("Add Product", Lucide.PLUS.create());
         addProduct.addThemeVariants(ButtonVariant.PRIMARY);
-        addProduct.addClassName("floating-action");
         addProduct.addClickListener(e -> openProductDialog(null));
 
-        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(ProductsView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewSourceButton viewSource = new ViewSourceButton(ProductsView.class, sourceService);
 
         return new ViewHeader(toggle, title, addProduct, viewSource);
     }

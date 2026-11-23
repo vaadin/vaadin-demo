@@ -2,9 +2,9 @@ package com.vaadin.demo.ui.view;
 
 import com.vaadin.demo.data.SampleData;
 import com.vaadin.demo.service.SourceService;
-import com.vaadin.demo.ui.component.SourceViewerDialog;
 import com.vaadin.demo.ui.component.View;
 import com.vaadin.demo.ui.component.ViewHeader;
+import com.vaadin.demo.ui.component.ViewSourceButton;
 import com.vaadin.demo.ui.util.Aura;
 import com.vaadin.demo.ui.util.Lucide;
 import com.vaadin.demo.ui.util.Notifications;
@@ -58,10 +58,8 @@ public class UsersView extends View {
 
         Button inviteUser = new Button("Invite User", Lucide.MAIL_PLUS.create(), e -> Notifications.show("Invite not yet implemented"));
         inviteUser.addThemeVariants(ButtonVariant.PRIMARY);
-        inviteUser.addClassName("floating-action");
 
-        Button viewSource = new Button("View Source", Lucide.CODE.create(), e -> new SourceViewerDialog(UsersView.class, sourceService).open());
-        viewSource.addThemeVariants(ButtonVariant.TERTIARY);
+        ViewSourceButton viewSource = new ViewSourceButton(UsersView.class, sourceService);
 
         return new ViewHeader(toggle, title, inviteUser, viewSource);
     }
