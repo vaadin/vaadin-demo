@@ -54,10 +54,6 @@
     white-space: nowrap;
   }
 
-  .orders-filters {
-    --vaadin-input-field-value-font-size: 14px;
-  }
-
   @media (max-width: 767px) {
     .status-cards {
       display: none;
