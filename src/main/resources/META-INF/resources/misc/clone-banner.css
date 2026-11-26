@@ -1,40 +1,131 @@
 /* Clone banner on hosted runs (CloneBanner.java). */
-/* Pinned above the app, which moves down to make room for it. On narrow
-   screens, and when zoomed in, the command is cut short; the copy button
-   still copies all of it. */
-html:has(aside.clone-banner) {
-  --clone-banner-height: 2.5rem;
-
-  vaadin-app-layout {
-    padding-top: var(--clone-banner-height);
-
-    &::part(drawer),
-    &::part(navbar) {
-      top: var(--clone-banner-height);
-    }
-  }
-}
-
+/* A pill floating over the top center of the app, on an overlay surface like
+   Aura's notifications, that fades in from the top. It covers the content
+   below it, so it can be closed to a chevron in a tab at the top edge, which
+   opens it again. On narrow screens, and when zoomed in, the command is cut
+   short; the copy button still copies all of it. */
 aside.clone-banner {
+  --aura-surface-level: 4;
+  --aura-surface-opacity: var(--aura-overlay-surface-opacity);
+  --clone-banner-duration: 0.2s;
+  /* Material Design 3's standard easing: quick to start, soft to settle */
+  --clone-banner-easing: cubic-bezier(0.2, 0, 0, 1);
+  --clone-banner-enter-scale: 0.97;
+  --clone-banner-enter-translate: 0 -50%;
+  /* The contents' fades take half the duration */
+  --clone-banner-fade: calc(var(--clone-banner-duration) / 2);
   align-items: center;
+  animation: clone-banner-in var(--clone-banner-duration) var(--clone-banner-easing) backwards;
+  backdrop-filter: var(--aura-overlay-backdrop-filter);
+  border: 1px solid var(--vaadin-border-color);
+  border-radius: var(--vaadin-radius-m);
+  box-shadow: var(--aura-overlay-shadow);
   box-sizing: border-box;
   color: var(--vaadin-text-color-secondary);
   display: flex;
   font-size: var(--aura-font-size-s);
-  gap: var(--vaadin-gap-s);
-  height: var(--clone-banner-height);
   inset-inline: 0;
+  /* Lets the parts below transition between a width and auto */
+  interpolate-size: allow-keywords;
   justify-content: center;
-  padding-inline: var(--vaadin-padding-m);
+  margin-inline: auto;
+  max-width: calc(100% - 2 * var(--vaadin-padding-s));
+  padding-block: var(--vaadin-padding-xs);
+  padding-inline: var(--vaadin-padding-m) var(--vaadin-padding-s);
   position: fixed;
-  top: 0;
+  top: var(--vaadin-gap-s);
+  transition-duration: var(--clone-banner-duration);
+  transition-property: border-radius, border-top-width, padding, top;
+  transition-timing-function: var(--clone-banner-easing);
+  width: fit-content;
   z-index: 2;
 
-  > span.label {
+  @media (prefers-reduced-motion: reduce) {
+    animation-name: clone-banner-fade-in;
+    transition: none;
+  }
+
+  /* The two states, open details and closed chevron. Opening and closing
+     animate their widths between auto (their content) and 0, and the banner
+     grows and shrinks with them; where interpolate-size isn't supported, the
+     width switches at once. A hidden state is also faded out and invisible,
+     which removes it from focus and screen readers. */
+  > span.details,
+  > span.opener {
+    align-items: center;
+    display: flex;
+    gap: var(--vaadin-gap-s);
+    /* Room for the buttons' focus rings, which overflow would clip */
+    margin: calc(-1 * var(--vaadin-padding-xs));
+    min-width: 0;
+    overflow: hidden;
+    padding: var(--vaadin-padding-xs);
+  }
+
+  > span.opener {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+  }
+
+  /* Closed: only the chevron, in a tab hanging from the top edge */
+  &[collapsed] {
+    --clone-banner-enter-scale: 1;
+    --clone-banner-enter-translate: 0 -100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-width: 0;
+    padding-block: 0;
+    padding-inline: var(--vaadin-padding-s);
+    top: 0;
+
+    > span.details {
+      opacity: 0;
+      visibility: hidden;
+      width: 0;
+    }
+
+    > span.opener {
+      opacity: 1;
+      visibility: visible;
+      width: auto;
+    }
+  }
+
+  /* Transitions are taken from the state being entered. A state being shown
+     grows first and fades its contents in during the second half; its
+     visibility switches at once, so it can take focus right away. */
+  > span.details,
+  &[collapsed] > span.opener {
+    transition:
+      opacity var(--clone-banner-fade) var(--clone-banner-easing) var(--clone-banner-fade),
+      width var(--clone-banner-duration) var(--clone-banner-easing);
+  }
+
+  /* A state being hidden fades its contents out during the first half while
+     it shrinks; its visibility switches at the end. */
+  > span.opener,
+  &[collapsed] > span.details {
+    transition:
+      opacity var(--clone-banner-fade) var(--clone-banner-easing),
+      visibility var(--clone-banner-duration) var(--clone-banner-easing),
+      width var(--clone-banner-duration) var(--clone-banner-easing);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    > span.details,
+    > span.opener,
+    &[collapsed] > span.details,
+    &[collapsed] > span.opener {
+      transition: none;
+    }
+  }
+
+  span.label {
     white-space: nowrap;
   }
 
-  > code.command {
+  code.command {
     color: var(--vaadin-text-color);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     min-width: 0;
@@ -43,11 +134,22 @@ aside.clone-banner {
     white-space: nowrap;
   }
 
+  vaadin-button {
+    flex: none;
+  }
+
+  /* Between the copy and close buttons; decorative */
+  span.divider {
+    align-self: stretch;
+    background: var(--vaadin-border-color);
+    flex: none;
+    margin-block: var(--vaadin-padding-xs);
+    width: 1px;
+  }
+
   /* The check mark sits on top of the copy icon and replaces it while the
      button has data-copied, set for two seconds after a copy. */
-  > vaadin-button.copy {
-    flex: none;
-
+  vaadin-button.copy {
     span.icons {
       display: grid;
 
@@ -94,5 +196,21 @@ aside.clone-banner {
     position: absolute;
     white-space: nowrap;
     width: 1px;
+  }
+}
+
+/* Entering on page load. Each state sets its own start values; the name stays
+   the same, so opening and closing don't replay it. */
+@keyframes clone-banner-in {
+  from {
+    opacity: 0;
+    scale: var(--clone-banner-enter-scale);
+    translate: var(--clone-banner-enter-translate);
+  }
+}
+
+@keyframes clone-banner-fade-in {
+  from {
+    opacity: 0;
   }
 }
